@@ -22,7 +22,7 @@
   <div class="container">
   <div class="flash-msg hide">
     <% flash.each do |message_type, message| %>
-      <div class="alert alert-<%=message_type%> alert-dismissible fade show text-center w-50 m-auto fixed-top mt-3 shadow" id="alert-app" role="alert">
+      <div class="alert2 alert alert-<%=message_type%> alert-dismissible fade show text-center w-50 m-auto fixed-top mt-3 shadow" id="alert-app" role="alert">
         <i class="bi bi-exclamation-circle fs-5"></i> <span class="fs-5"> <%= message %> </span>
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
       </div>
@@ -38,11 +38,15 @@
      $('.flash-msg').fadeIn(300).removeClass('hide');
       
   setTimeout(function() {
-    $('.alert').animate({
+    $('.alert2').animate({
       top: '-200px'
     }, 1000);
   }, 5000);
   });
+
+  setTimeout(function() {
+    $('.alert-erro').fadeOut('slow')
+  }, 5000)
   </script>
 
   </body>
