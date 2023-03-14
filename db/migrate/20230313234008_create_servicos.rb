@@ -6,6 +6,7 @@ class CreateServicos < ActiveRecord::Migration[6.1]
       t.string :servico
       t.decimal :valor, precision: 10, scale: 2
       t.string :caixa
+      t.boolean :pago
 
       t.timestamps
     end

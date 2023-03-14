@@ -21,6 +21,7 @@ ActiveRecord::Schema.define(version: 2023_03_13_234008) do
     t.string "servico"
     t.decimal "valor", precision: 10, scale: 2
     t.string "caixa"
+    t.boolean "pago"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end

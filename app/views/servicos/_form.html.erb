@@ -23,6 +23,10 @@
     <%= form.text_field :caixa, class: "form-control" %>
   </div>
   <div class="form-group mt-4">
+    <%= form.label :pago %>
+    <%= form.check_box :pago, class: "form-check-input" %>
+  </div>
+  <div class="form-group mt-4">
     <%= form.submit "Salvar", class: "btn btn-primary me-2" %>
     <%= link_to "Voltar", servicos_path, class: "btn btn-primary active" %>
   </div>

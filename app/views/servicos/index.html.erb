@@ -9,6 +9,7 @@
         <th>Cliente</th>
         <th>Serviço</th>
         <th>Valor</th>
+        <th>Pago?</th>
         <th colspan="3">Ações</th>
       </tr>
     </thead>
@@ -17,9 +18,16 @@
       <% @servicos.each do |servico| %>
         <tr>
           <td><%= servico.data.strftime('%d/%m/%Y %H:%M') %></td>
-          <td><%= servico.cliente %></td>
-          <td><%= servico.servico %></td>
+          <td><%= servico.cliente.upcase %></td>
+          <td><%= servico.servico.upcase %></td>
           <td><%= servico.valor %></td>
+          <td>
+            <% if servico.pago %>
+              <span class="badge rounded-pill bg-success">sim</span>
+            <% else %>
+              <span class="badge rounded-pill bg-danger">não</span>
+            <% end %>
+          </td>
           <td>
             <%#= link_to 'Show', servico %>
             <%= link_to '', edit_servico_path(servico), class:'btn btn-primary rounded-pill bi bi-pencil-square text-white fs-6'  %>

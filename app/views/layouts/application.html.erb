@@ -47,6 +47,14 @@
   setTimeout(function() {
     $('.alert-erro').fadeOut('slow')
   }, 5000)
+
+  var docTitle = document.title;
+  window.addEventListener("blur", () =>{
+    document.title = "LAVAJATO SYSTEM"
+  })
+  window.addEventListener("focus", () =>{
+    document.title = docTitle
+  })
   </script>
 
   </body>
