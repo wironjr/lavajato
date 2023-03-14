@@ -9,6 +9,8 @@
     <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
 
+    <script src="https://code.jquery.com/jquery-3.6.3.min.js" integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
     
@@ -18,15 +20,30 @@
 
   <body>
   <div class="container">
+  <div class="flash-msg hide">
     <% flash.each do |message_type, message| %>
       <div class="alert alert-<%=message_type%> alert-dismissible fade show text-center w-50 m-auto fixed-top mt-3 shadow" id="alert-app" role="alert">
         <i class="bi bi-exclamation-circle fs-5"></i> <span class="fs-5"> <%= message %> </span>
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
       </div>
     <% end %>
+  </div>
 
     <%= yield %>
 
   </div>
+  
+  <script>
+  $(document).ready(function() {
+     $('.flash-msg').fadeIn(300).removeClass('hide');
+      
+  setTimeout(function() {
+    $('.alert').animate({
+      top: '-200px'
+    }, 1000);
+  }, 5000);
+  });
+  </script>
+
   </body>
 </html>
