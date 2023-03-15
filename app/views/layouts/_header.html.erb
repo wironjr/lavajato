@@ -1,0 +1,11 @@
+<% if user_signed_in? %>
+  <nav class="navbar bg-light shadow ">
+    <div class="container-fluid ">
+      <a class="navbar-brand" href="/">
+        
+      </a>
+        <div class="fw-bold text-center" style="color: #000">Bem-vindo(a), <%= @current_user %></div>
+        <%= link_to 'Sair', sair_path, class:'text-white badge text-wrap', style:'text-decoration: none; font-size: 0.9rem; width: 3rem; height: auto; background-color: #572057 !important', method: :delete %>
+    </div>
+  </nav>
+<% end %>

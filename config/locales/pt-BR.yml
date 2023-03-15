@@ -1,8 +1,17 @@
 pt-BR:
   hello: "Olá Mundo!"
   activerecord:
+    attributes:
+      user:
+        nome: 'Nome'
+        password: 'Senha'
+        password_confirmation: 'Confirmação de senha'
+
     errors:
       messages:
-        blank: "não pode ficar em branco"
-        invalid: "não é válido"
-        taken: "já está em uso"
+        blank: 'não pode ser em branco'
+        invalid: 'inválido'
+        taken: 'já cadastrado'
+        confirmation: 'não é igual. Insira a mesma senha.'
+        too_long: 'muito grande. Máximo %{count} caracteres'
+        too_short: 'muito curta. Mínima %{count} caracteres'  
