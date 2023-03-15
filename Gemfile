@@ -24,7 +24,11 @@ gem 'jbuilder', '~> 2.7'
 
 gem 'bootstrap', '~> 5.1'
 
+gem 'bcrypt', '~> 3.1.7'
+
 gem 'pry', '~> 0.13.1'
+
+
 
 # Use Active Storage variant
 # gem 'image_processing', '~> 1.2'
