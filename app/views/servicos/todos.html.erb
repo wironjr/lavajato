@@ -1,10 +1,6 @@
-<div class="float-end">
-  <a href="/servicos/new" class=" fs-1 ms-2"><i class="bi bi-plus-circle-fill"></i></a>
-  <a href="/servicos/todos" class=" fs-1"><i class="bi bi-filter-circle-fill"></i></a>
-</div>
+<a href="/servicos/new" class="float-end fs-1"><i class="bi bi-plus-circle-fill"></i></a>
 
-<h1 class="">Serviços do dia</h1>
- 
+<h1>Todos serviços</h1>
 <div class="table-responsive mt-4">
   <table class="table">
     <thead>
@@ -19,12 +15,12 @@
     </thead>
 
     <tbody>
-      <% @servicos_do_dia.each do |servico| %>
+      <% @servicos.each do |servico| %>
         <tr>
           <td><%= servico.data.strftime('%d/%m/%Y %H:%M') %></td>
           <td><%= servico.cliente.upcase %></td>
           <td><%= servico.servico.upcase %></td>
-          <td class="moeda"><%= numero_real(servico.valor, 2) %></td>
+          <td><%= numero_real(servico.valor,2) %></td>
           <td>
             <% if servico.pago %>
               <span class="badge rounded-pill bg-success">sim</span>
@@ -43,6 +39,7 @@
   </table>
 </div>
 
-<br>
+<%= link_to "Voltar", servicos_path, class: "btn btn-primary active" %>
 
+<br>
 

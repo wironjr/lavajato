@@ -16,7 +16,7 @@
   </div>
   <div class="form-group mb-2">
     <%= form.label :valor %>
-    <%= form.number_field :valor, class: "form-control" %>
+    <%= form.text_field :valor, value: params[:action] == 'edit' ? numero_real(@servico.valor,2) : '', class: "form-control moeda" %>
   </div>
   <div class="form-group mb-2">
     <%= form.label :caixa %>
@@ -33,3 +33,13 @@
   
   
 <% end %>
+
+ <script>
+  $(document).ready(function(){
+    $('.moeda').maskMoney({
+      prefix: 'R$ ',
+      decimal: ',',
+      thousands: '.'
+    });
+  });
+  </script>

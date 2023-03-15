@@ -4,6 +4,11 @@ class ServicosController < ApplicationController
   # GET /servicos or /servicos.json
   def index
     @servicos = Servico.all
+    @servicos_do_dia = @servicos.where("to_char(data,'YYYY-MM-DD') = '#{Time.now.to_date.to_s}'")
+  end
+
+  def todos
+    @servicos = Servico.all
   end
 
   # GET /servicos/1 or /servicos/1.json
@@ -21,6 +26,8 @@ class ServicosController < ApplicationController
 
   # POST /servicos or /servicos.json
   def create
+    params[:servico][:valor] = params[:servico][:valor].gsub('R$','').gsub(' ','')
+
     @servico = Servico.new(servico_params)
 
   
@@ -35,6 +42,7 @@ class ServicosController < ApplicationController
 
   # PATCH/PUT /servicos/1 or /servicos/1.json
   def update
+    params[:servico][:valor] = params[:servico][:valor].gsub('R$','').gsub(' ','')
    
       if @servico.update(servico_params)
         flash[:success] = "Serviço atualizado com sucesso!" 
