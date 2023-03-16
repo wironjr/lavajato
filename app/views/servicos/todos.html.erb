@@ -31,7 +31,7 @@
           <td>
             <%#= link_to 'Show', servico %>
             <%= link_to '', edit_servico_path(servico), class:'btn btn-primary rounded-pill bi bi-pencil-square text-white fs-6'  %>
-            <%= link_to '', servico, method: :delete, class: 'btn btn-primary rounded-pill bi bi-trash3-fill', data: { confirm: 'Are you sure?' } %>
+            <%= link_to '', servico, method: :delete, class: 'btn btn-danger rounded-pill bi bi-trash3-fill', data: { confirm: 'Are you sure?' } %>
           </td>
         </tr>
       <% end %>

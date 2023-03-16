@@ -1,11 +1,43 @@
 <% if user_signed_in? %>
-  <nav class="navbar bg-light shadow ">
-    <div class="container-fluid ">
-      <a class="navbar-brand" href="/">
-        
-      </a>
-        <div class="fw-bold text-center" style="color: #000">Bem-vindo(a), <%= @current_user %></div>
-        <%= link_to 'Sair', sair_path, class:'text-white badge text-wrap', style:'text-decoration: none; font-size: 0.9rem; width: 3rem; height: auto; background-color: #572057 !important', method: :delete %>
+<nav class="navbar navbar-expand-lg bg-primary text-white shadow">
+  <div class="container-fluid ">
+    <a class="navbar-brand text-white" href="/">LavaJato System</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavDropdown">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link active text-white" aria-current="page" href="/">Inicio</a>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle text-white" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Serviços
+          </a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="/servicos">Diário</a></li>
+            <li><a class="dropdown-item" href="#">Mensal</a></li>
+            <li><a class="dropdown-item" href="/servicos/todos">Todos</a></li>
+          </ul>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-white" href="/users">Usuários</a>
+        </li>
+      
+     
+      </ul>
+      <div class="nav-item dropdown ms-auto">
+        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+          <%= @current_user.nome.capitalize %>
+        </a>
+        <ul class="dropdown-menu dropdown-menu-end">
+          <li><%= link_to 'Editar Usuário', edit_user_path(current_user), class:"dropdown-item" %></li>
+          <li><%= link_to 'Sair', sair_path, class:"dropdown-item", method: :delete %></li>
+        </ul>
+      </div>
+   
+
     </div>
-  </nav>
+  </div>
+</nav>
 <% end %>
