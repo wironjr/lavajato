@@ -12,6 +12,7 @@
         <th style="width: 15%">Data/Hora</th>
         <th style="width: 25%">Cliente</th>
         <th style="width: 25%">Serviço</th>
+        <th>Caixa</th>
         <th>Valor</th>
         <th>Pago?</th>
         <th >Ações</th>
@@ -24,6 +25,7 @@
           <td><%= servico.data.strftime('%d/%m/%Y %H:%M') %></td>
           <td><%= servico.cliente.upcase %></td>
           <td><%= servico.servico.upcase %></td>
+          <td><%= servico.caixa.upcase %></td>
           <td class="moeda"><%= numero_real(servico.valor, 2) %></td>
           <td>
             <% if servico.pago %>
