@@ -1,0 +1,122 @@
+<a href="/servicos/new" class="float-end fs-1"><i class="bi bi-plus-circle-fill"></i></a>
+
+<h1 class="mt-3">Todos serviços do mês de <span id="mes-atual"></span></h1>
+
+<div class=" d-flex justify-content-center mt-5 gap-4" >
+  <div class="card shadow text-center text-bg-primary" style="width: 10rem">
+    <h5 class="card-header">Valor</h5>
+    <div class="card-body">
+      <h5 class="card-title fw-bold" style="text-shadow: 1px 1px #000"><%= numero_real(@servicos_total,2) %></h5>
+    </div>
+  </div>
+  <div class="card shadow text-center text-bg-secondary   " style="width: 10rem">
+    <h5 class="card-header" >Quantidade</h5>
+    <div class="card-body">
+      <h5 class="card-title fw-bold" style="text-shadow: 1px 1px #000"><%= pluralize(@servicos_quantidade_mes, 'serviço', 'serviços') %></h5>
+    </div>
+  </div>
+</div>
+    
+ 
+<form>
+  <div class="row mt-4">
+    <div class="col-sm-2 mb-2">
+      <select name="mes_select" id="select-mes" class="form-control">
+        <option selected disabled>Selecione o mês</option>
+      </select>
+    </div>
+    <div class="col-sm-1 mb-2">
+      <button type="submit" class="btn btn-primary">Pesquisar</button>
+    </div>
+    <div class="col-sm-2 mb-2">
+    <a href="/servicos/mensal/" class="btn btn-primary">Limpar Filtro</a>
+    </div>
+  </div>
+</form>
+
+
+<div class="table-responsive mt-4">
+  <table class="table">
+    <thead>
+      <tr>
+        <th style="width: 15%">Data/Hora</th>
+        <th style="width: 25%">Cliente</th>
+        <th style="width: 25%">Serviço</th>
+        <th>Caixa</th>
+        <th>Valor</th>
+        <th>Pago?</th>
+        <th colspan="3">Ações</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% @servicos.each do |servico| %>
+        <tr>
+          <td><%= servico.data.strftime('%d/%m/%Y %H:%M') %></td>
+          <td><%= servico.cliente.upcase %></td>
+          <td><%= servico.servico.upcase %></td>
+          <td><%= servico.caixa.upcase %></td>
+          <td><%= numero_real(servico.valor,2) %></td>
+          <td>
+            <% if servico.pago %>
+              <span class="badge rounded-pill bg-success">sim</span>
+            <% else %>
+              <span class="badge rounded-pill bg-danger">não</span>
+            <% end %>
+          </td>
+          <td>
+            <%#= link_to 'Show', servico %>
+            <%= link_to '', edit_servico_path(servico), class:'btn btn-primary rounded-pill bi bi-pencil-square text-white fs-6'  %>
+            <%= link_to '', servico, method: :delete, class: 'btn btn-danger rounded-pill bi bi-trash3-fill', data: { confirm: 'Are you sure?' } %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+
+<%= link_to "Voltar", servicos_path, class: "btn btn-primary active" %>
+
+<br>
+
+<script>
+monName = ["janeiro", "fevereiro", "março", "abril", "maio", "junho","julho", "agosto","setembro", "outubro", "novembro", "dezembro"]
+now = new Date
+
+urlParams = new URLSearchParams(location.search);
+
+if(urlParams.get('mes_select') == 1){
+  $('#mes-atual').text(monName [0])
+}else if(urlParams.get('mes_select') == 2){
+  $('#mes-atual').text(monName [1])
+}else if(urlParams.get('mes_select') == 3){
+  $('#mes-atual').text(monName [2])
+}else if(urlParams.get('mes_select') == 4){
+  $('#mes-atual').text(monName [3])
+}else if(urlParams.get('mes_select') == 5){
+  $('#mes-atual').text(monName [4])
+}else if(urlParams.get('mes_select') == 6){
+  $('#mes-atual').text(monName [5])
+}else if(urlParams.get('mes_select') == 7){
+  $('#mes-atual').text(monName [6])
+}else if(urlParams.get('mes_select') == 8){
+  $('#mes-atual').text(monName [7])
+}else if(urlParams.get('mes_select') == 9){
+  $('#mes-atual').text(monName [8])
+}else if(urlParams.get('mes_select') == 10){
+  $('#mes-atual').text(monName [9])
+}else if(urlParams.get('mes_select') == 11){
+  $('#mes-atual').text(monName [10])
+}else if(urlParams.get('mes_select') == 12){
+  $('#mes-atual').text(monName [11])
+}else{
+  $('#mes-atual').text(monName [now.getMonth()])
+}
+
+
+var x = 1
+monName.forEach(function(item){
+    $('#select-mes').append('<option value="'+ x++ +'">' + item.toUpperCase() + '</option>');
+});
+
+</script>

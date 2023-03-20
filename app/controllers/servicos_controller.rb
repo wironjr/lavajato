@@ -12,6 +12,21 @@ class ServicosController < ApplicationController
     @servicos = Servico.all
   end
 
+  def mensal
+    @servicos = Servico.where(data: Time.now.beginning_of_month..Time.now.end_of_month)
+    @servicos_total = Servico.where(data: Time.now.beginning_of_month..Time.now.end_of_month).map(&:valor).sum
+    
+    if params[:mes_select]
+      @mes = params[:mes_select] || Time.now.month
+      @servicos = Servico.where("DATE_PART('month', data) = ?", @mes)
+      @servicos_total = Servico.where("DATE_PART('month', data) = ?", @mes).map(&:valor).sum
+      @servicos_quantidade_mes = Servico.where("DATE_PART('month', data) = ?", @mes).count
+    else
+      @servicos = Servico.where(data: Time.now.beginning_of_month..Time.now.end_of_month)
+      @servicos_quantidade_mes = Servico.where(data: Time.now.beginning_of_month..Time.now.end_of_month).count
+    end
+  end
+
   # GET /servicos/1 or /servicos/1.json
   def show
   end

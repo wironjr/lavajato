@@ -5,6 +5,7 @@ Rails.application.routes.draw do
 
   resources :servicos do
     get :todos, on: :collection
+    get :mensal, on: :collection
   end
 
   get 'entrar', to: 'sessions#new'
