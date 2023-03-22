@@ -6,24 +6,50 @@ class ServicosController < ApplicationController
   def index
     @servicos = Servico.all
     @servicos_do_dia = @servicos.where("to_char(data,'YYYY-MM-DD') = '#{Time.now.to_date.to_s}'")
+    @servicos_total = @servicos.where("to_char(data,'YYYY-MM-DD') = '#{Time.now.to_date.to_s}'").where(pago: :true).map(&:valor).sum
+    @servicos_quantidade_diario = @servicos.where("to_char(data,'YYYY-MM-DD') = '#{Time.now.to_date.to_s}'").count
+    @servicos_pago_pendedente = @servicos.where("to_char(data,'YYYY-MM-DD') = '#{Time.now.to_date.to_s}'").where(pago: :false).count
+    @users = User.all.select("id","nome").order(:nome)
   end
 
   def todos
     @servicos = Servico.all
+    @servicos_total = @servicos.map(&:valor).sum
+    @servicos_quantidade = @servicos.count
+    @servicos_pago_pendedente = @servicos.where(pago: :false).count
+
+    if params[:data_search] || params[:cliente_busca]
+      @servicos = @servicos.where('cliente ILIKE ?', "%#{params[:cliente_busca]}%") if params[:cliente_busca].present?
+      @servicos_pago_pendedente = @servicos.where(pago: :false).count
+      if params[:data_search].present?
+        params[:data_search] = Date.parse(params[:data_search]).strftime("%Y-%m-%d")
+        @servicos = @servicos.where('CAST(data AS TEXT) LIKE ?', "%#{params[:data_search]}%")
+        @servicos_total = @servicos.map(&:valor).sum
+        @servicos_quantidade = @servicos.count
+        @servicos_pago_pendedente = @servicos.where(pago: :false).count
+      end
+    end
   end
 
   def mensal
-    @servicos = Servico.where(data: Time.now.beginning_of_month..Time.now.end_of_month)
-    @servicos_total = Servico.where(data: Time.now.beginning_of_month..Time.now.end_of_month).map(&:valor).sum
+    @servicos_all = Servico.all
+    @servicos = @servicos_all.where(data: Time.now.beginning_of_month..Time.now.end_of_month)
+    @servicos_total = @servicos_all.where(data: Time.now.beginning_of_month..Time.now.end_of_month).where(pago: :true).map(&:valor).sum
+    @servicos_pago_pendedente = @servicos.where(pago: :false).count
+
     
-    if params[:mes_select]
+    if params[:mes_select] || params[:cliente_busca]
       @mes = params[:mes_select] || Time.now.month
-      @servicos = Servico.where("DATE_PART('month', data) = ?", @mes)
-      @servicos_total = Servico.where("DATE_PART('month', data) = ?", @mes).map(&:valor).sum
-      @servicos_quantidade_mes = Servico.where("DATE_PART('month', data) = ?", @mes).count
+      @servicos = @servicos_all.where("DATE_PART('month', data) = ?", @mes) if params[:mes_select].present?
+      @servicos = @servicos_all.where('cliente ILIKE ?', "%#{params[:cliente_busca]}%") if params[:cliente_busca].present?
+      @servicos_pago_pendedente = @servicos.where(pago: :false).count
+
+      @servicos_total = @servicos_all.where("DATE_PART('month', data) = ?", @mes).where(pago: :true).map(&:valor).sum
+      @servicos_quantidade_mes = @servicos_all.where("DATE_PART('month', data) = ?", @mes).count
     else
-      @servicos = Servico.where(data: Time.now.beginning_of_month..Time.now.end_of_month)
-      @servicos_quantidade_mes = Servico.where(data: Time.now.beginning_of_month..Time.now.end_of_month).count
+      @servicos = @servicos_all.where(data: Time.now.beginning_of_month..Time.now.end_of_month)
+      @servicos_quantidade_mes = @servicos_all.where(data: Time.now.beginning_of_month..Time.now.end_of_month).count
+      @servicos_pago_pendedente = @servicos.where(pago: :false).count
     end
   end
 
@@ -34,17 +60,22 @@ class ServicosController < ApplicationController
   # GET /servicos/new
   def new
     @servico = Servico.new
+    @users = User.all.select("id","nome").order(:nome)
   end
 
   # GET /servicos/1/edit
   def edit
+    @users = User.all.select("id","nome").order(:nome)
   end
 
   # POST /servicos or /servicos.json
   def create
+    @users = User.all.select("id","nome").order(:nome)
     params[:servico][:valor] = params[:servico][:valor].gsub('R$','').gsub(' ','')
 
     @servico = Servico.new(servico_params)
+
+
 
   
     if @servico.save
@@ -86,6 +117,6 @@ class ServicosController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def servico_params
-      params.require(:servico).permit(:cliente, :data, :servico, :valor, :caixa, :pago)
+      params.require(:servico).permit(:cliente, :data, :servico, :valor, :caixa, :pago, :veiculo)
     end
 end

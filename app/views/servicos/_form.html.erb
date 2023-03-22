@@ -8,11 +8,15 @@
   </div>
   <div class="form-group mb-2">
     <%= form.label :cliente %>
-    <%= form.text_field :cliente, class: "form-control" %>
+    <%= form.text_field :cliente, class: "form-control text-uppercase" %>
+  </div>
+  <div class="form-group mb-2">
+    <%= form.label :veiculo, 'Veículo' %>
+    <%= form.text_field :veiculo, class: "form-control text-uppercase" %>
   </div>
   <div class="form-group mb-2">
     <%= form.label :servico, 'Serviço' %>
-    <%= form.text_field :servico, class: "form-control" %>
+    <%= form.text_field :servico, class: "form-control text-uppercase" %>
   </div>
   <div class="form-group mb-2">
     <%= form.label :valor %>
@@ -20,8 +24,7 @@
   </div>
   <div class="form-group mb-2">
     <%= form.label :caixa %>
-    <%= form.text_field :caixa, class: "form-control" %>
-  </div>
+    <%= form.select :caixa, [["NORMAL"]] + @users.map { |u| [u.nome.upcase] },{}, class: "form-control" %>
   <div class="form-group mt-4">
     <%= form.label :pago %>
     <%= form.check_box :pago, class: "form-check-input" %>
@@ -32,6 +35,7 @@
   </div>
   
   
+   
 <% end %>
 
  <script>
