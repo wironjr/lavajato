@@ -1,10 +1,72 @@
 <div class="mt-3 text-center ">
-  <div class="mb-3"><h2>CADASTRAR</h2></div>
+  <div class="mb-3"><h2 class="">CADASTRAR</h2></div>
   <div class="row gap-3 d-flex justify-content-center">
-    <%= link_to ' Serviços', new_servico_path, class:'btn btn-primary bi bi-stars ', style:'width: 10rem; height: 6rem; font-size: 1.73rem' %>
-    <%= link_to ' Produtos', new_user_path, class:'btn btn-primary bi bi-box-seam ', style:'width: 10rem; height: 6rem; font-size: 1.65rem' %>
-    <%= link_to ' Despesas', new_user_path, class:'btn btn-primary bi bi-dash-circle ', style:'width: 10rem; height: 6rem; font-size: 1.6rem' %>
-    <%= link_to ' Usuários', new_user_path, class:'btn btn-primary bi bi-person-add ', style:'width: 10rem; height: 6rem; font-size: 1.7rem' %>
+    <%= link_to ' Serviços', new_servico_path, class:'btn btn-primary bi bi-stars shadow btn-tremer', style:'width: 10rem; height: 6rem; font-size: 1.73rem' %>
+    <%= link_to ' Produtos', new_user_path, class:'btn btn-primary bi bi-box-seam shadow btn-tremer', style:'width: 10rem; height: 6rem; font-size: 1.65rem' %>
+    <%= link_to ' Despesas', new_user_path, class:'btn btn-primary bi bi-dash-circle shadow btn-tremer', style:'width: 10rem; height: 6rem; font-size: 1.6rem' %>
+    <%= link_to ' Usuários', new_user_path, class:'btn btn-primary bi bi-person-add shadow btn-tremer', style:'width: 10rem; height: 6rem; font-size: 1.7rem' %>
+  </div>  
+</div>
+<div class="mt-5 text-center mb-3">
+  <div class="mb-3"><h2 class="">ACOMPANHAMENTO MENSAL</h2></div>
+  <div class="row gap-3 d-flex justify-content-center">
+    <div class="card shadow text-center text-bg-success" style="width: 10rem"
+      data-bs-toggle="tooltip" data-bs-placement="left"
+        data-bs-custom-class="custom-tooltip"
+        data-bs-title="Valor total arrecadado no mês.">
+      <h5 class="card-header">Valor total</h5>
+      <div class="card-body">
+        <h5 class="card-title fw-bold" style="text-shadow: 1px 1px #000"><%= numero_real(@servicos_total,2) %></h5>
+      </div>
+    </div>
+    <div class="card shadow text-center text-bg-success" style="width: 10rem"
+      data-bs-toggle="tooltip" data-bs-placement="bottom"
+        data-bs-custom-class="custom-tooltip"
+        data-bs-title="Valor lucro arrecadado no mês.">
+      <h5 class="card-header">Valor lucro</h5>
+      <div class="card-body">
+        <h5 class="card-title fw-bold" style="text-shadow: 1px 1px #000"><%= numero_real(@servicos_total,2) %></h5>
+      </div>
+    </div>
+    <div class="card shadow text-center text-bg-secondary" style="width: 10rem"
+        data-bs-toggle="tooltip" data-bs-placement="bottom"
+        data-bs-custom-class="custom-tooltip"
+        data-bs-title="Quantidade de serviços mensal.">
+      <h5 class="card-header" style="font-size: 1.2rem">Quantidade</h5>
+      <div class="card-body">
+        <h5 class="card-title fw-bold" style="text-shadow: 1px 1px #000; font-size: 1rem"><%= pluralize(@servicos_quantidade_mes, 'serviço', 'serviços') %></h5>
+      </div>
+    </div>
+    <div class="card shadow text-center text-bg-danger" style="width: 10rem"
+        data-bs-toggle="tooltip" data-bs-placement="right"
+        data-bs-custom-class="custom-tooltip"
+        data-bs-title="Serviços que não foi marcado o pagamento.">
+    <h5 class="card-header" style="font-size: 1.2rem" >Pagamento</h5>
+    <div class="card-body">
+      <h5 class="card-title fw-bold" style="text-shadow: 1px 1px #000; font-size: 1rem" ><%= pluralize( @servicos_pago_pendedente , 'pendente', 'pendentes') %></h5>
+    </div>
+  </div>
   </div>
 </div>
 
+<div class="mt-5 mb-4 card p-4 shadow">
+  <%= column_chart @dados_grafico, library: {title: {text: 'Quantidade de serviços nos últimos 3 meses'}} %>
+
+</div>
+
+<script>
+$(document).ready(function() {
+  $('.btn-tremer').click(function(e) {
+    e.preventDefault(); // Evita que o link seja seguido imediatamente
+    var link = $(this).attr('href');
+    $('body').fadeOut(300, function() { // Adiciona uma animação de desaparecimento suave na página atual
+      setTimeout(function() {
+        window.location.href = link; // Redireciona para o link após o atraso
+      }, 100); // Define o atraso para 1 segundo (1000ms)
+    });
+  });
+});
+
+const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+</script>
