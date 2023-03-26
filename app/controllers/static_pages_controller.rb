@@ -7,9 +7,18 @@ class StaticPagesController < ApplicationController
         @servicos_quantidade_mes = @servicos.where(data: Time.now.beginning_of_month..Time.now.end_of_month).count
         @servicos_pago_pendedente = @servicos.where(data: Time.now.beginning_of_month..Time.now.end_of_month).where(pago: :false).count
         
-        @servicos_graf = Servico.select("date_trunc('month', data) as mes, count(*) as quantidade, sum(valor) as lucro").where("data >= ?", 3.months.ago).group("date_trunc('month', data)")
-        @meses_em_portugues = {"January" => "Janeiro", "February" => "Fevereiro", "March" => "Março", "April" => "Abril", "May" => "Maio", "June" => "Junho", "July" => "Julho", "August" => "Agosto", "September" => "Setembro", "October" => "Outubro", "November" => "Novembro", "December" => "Dezembro"}
-        @dados_grafico = @servicos_graf.map {|s| [@meses_em_portugues[s.mes.strftime("%B")], s.quantidade, s.lucro]}.last(3)
-
+        start_date = 3.months.ago.beginning_of_month
+        end_date = Time.now.end_of_month
+        
+        services_data = Servico
+          .select("DATE_TRUNC('month', data) as month, COUNT(*) as count, SUM(valor) as total")
+          .where(data: start_date..end_date).where(pago: :true)
+          .group("1")
+          .order("1")
+          
+        @categories = services_data.map { |s| I18n.l(s.month, format: '%B') }
+        @services_data = services_data.map { |s| s.count }
+        @profit_data = services_data.map { |s| s.total }
+   
     end
 end

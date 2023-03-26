@@ -50,9 +50,63 @@
 </div>
 
 <div class="mt-5 mb-4 card p-4 shadow">
-  <%= column_chart @dados_grafico, library: {title: {text: 'Quantidade de serviços nos últimos 3 meses'}} %>
+  
+<div id="chart"></div>
+
+<%= javascript_tag do %>
+  $(document).ready(function() {
+    var chart = new Highcharts.Chart({
+      credits: {
+        enabled: false
+      },
+      lang: {
+        printChart: "Imprimir gráfico",
+        downloadPNG: "Baixar como PNG",
+        downloadJPEG: "Baixar como JPEG",
+        downloadPDF: "Baixar como PDF",
+        downloadSVG: "Baixar como SVG",
+        contextButtonTitle: "Opções de exportação do gráfico",
+        viewFullscreen: "Ver gráfico em tela cheia",
+      },
+      chart: {
+        renderTo: 'chart',
+        type: 'column'
+      },
+      title: {
+        text: 'Quantidade de serviços e lucro dos últimos três meses'
+      },
+      xAxis: {
+        categories: <%= raw @categories %>
+      },
+      yAxis: [{
+        title: {
+          text: 'Quantidade de serviços'
+        }
+      }, {
+        opposite: true,
+        title: {
+          text: 'Lucro'
+        }
+      }],
+      series: [{
+        name: 'Quantidade de serviços',
+        data: <%= raw @services_data %>,
+        yAxis: 0
+      }, {
+        name: 'Lucro',
+        data: <%= raw @profit_data %>,
+        yAxis: 1,
+        tooltip: {
+          valuePrefix: 'R$'
+        }
+      }]
+    });
+  });
+<% end %>
 
 </div>
+
+
 
 <script>
 $(document).ready(function() {
