@@ -2,7 +2,7 @@
 	<h1 class="text-center mt-5"></h1>
 	<br><br><br><br><br>
 	<div class="d-flex justify-content-center ">
-		<div class="d-flex justify-content-center mt-3 card shadow " style="width: 22rem">
+		<div class="d-flex justify-content-center mt-3 card shadow text-bg-primary" style="width: 22rem">
 
 			<%= form_for :session, url: entrar_path, method: :post do |form| %>
 			<div class="p-3">
@@ -21,8 +21,9 @@
 						<label for="mostrar-senha" style="font-size: 0.7rem; " class="">Mostar senha</label>
 					</div>
 
-			<div class="mt-2 p-1">
-					<%= form.submit 'Entrar', class:'btn btn-primary' %>
+			<div class="mt-4 p-1">
+					<%= form.submit 'Entrar', class:'btn btn-dark' %>
+					<%= image_tag("logocleanner.png", width: 160, class:'float-end') %>
 			</div>
 
 			<% end %>
