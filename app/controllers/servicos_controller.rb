@@ -71,13 +71,10 @@ class ServicosController < ApplicationController
   # POST /servicos or /servicos.json
   def create
     @users = User.all.select("id","nome").order(:nome)
-    params[:servico][:valor] = params[:servico][:valor].gsub('R$','').gsub(' ','')
+    params[:servico][:valor] = params[:servico][:valor].gsub('R$','').gsub(' ','').gsub('.','')
 
     @servico = Servico.new(servico_params)
 
-
-
-  
     if @servico.save
       flash[:success] = "Serviço criado com sucesso!" 
       redirect_to servicos_path
@@ -89,7 +86,8 @@ class ServicosController < ApplicationController
 
   # PATCH/PUT /servicos/1 or /servicos/1.json
   def update
-    params[:servico][:valor] = params[:servico][:valor].gsub('R$','').gsub(' ','')
+    @users = User.all.select("id","nome").order(:nome)
+    params[:servico][:valor] = params[:servico][:valor].gsub('R$','').gsub(' ','').gsub('.','')
    
       if @servico.update(servico_params)
         flash[:success] = "Serviço atualizado com sucesso!" 

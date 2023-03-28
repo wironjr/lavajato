@@ -3,6 +3,11 @@ Rails.application.routes.draw do
   
   resources :users
 
+  resources :despesas do
+    get :produtos, on: :collection
+    get :geral, on: :collection
+  end
+
   resources :servicos do
     get :todos, on: :collection
     get :mensal, on: :collection

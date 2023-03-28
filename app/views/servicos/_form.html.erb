@@ -4,7 +4,7 @@
 
   <div class="form-group mb-2">
     <%= form.label :data %>
-    <%= form.datetime_local_field :data, value: Time.now.strftime('%Y-%m-%dT%H:%M'), class: "form-control" %>
+    <%= form.datetime_local_field :data, value: @servico.data.present? ? @servico.data.strftime('%Y-%m-%dT%H:%M') : Time.now.strftime('%Y-%m-%dT%H:%M'), class: "form-control" %>
   </div>
   <div class="form-group mb-2">
     <%= form.label :cliente %>

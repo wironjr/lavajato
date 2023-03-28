@@ -1,0 +1,48 @@
+<div><%= link_to '', new_despesa_path, class: 'bi-plus-circle-fill fs-1 float-end ' %></div>
+
+<h1 class="mt-2">Despesas em produtos</h1>
+
+<div class=" d-flex justify-content-center mt-3 gap-4 mb-4" >
+  <div class="card shadow text-center text-bg-primary" style="width: 10rem">
+    <h5 class="card-header">Valor</h5>
+    <div class="card-body">
+      <h5 class="card-title fw-bold" style="text-shadow: 1px 1px #000"><%= numero_real(@despesas_total,2) %></h5>
+    </div>
+  </div>
+  <div class="card shadow text-center text-bg-secondary   " style="width: 10rem">
+    <h5 class="card-header" >Quantidade</h5>
+    <div class="card-body">
+      <h5 class="card-title fw-bold" style="text-shadow: 1px 1px #000"><%= pluralize(@despesas_total_qnt, 'despesa', 'despesas') %></h5>
+    </div>
+  </div>
+</div>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Data</th>
+      <th>Observação</th>
+      <th>Tipo</th>
+      <th>Valor</th>
+      <th colspan="3">Ações</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @despesas.each do |despesa| %>
+      <tr>
+        <td><%= despesa.data.strftime('%d/%m/%Y %H:%M') %></td>
+        <td><%= despesa.observacao.upcase %></td>
+        <td><%= despesa.tipo %></td>
+        <td><%= numero_real(despesa.valor,2) %></td>
+        <td>
+          <%= link_to '', edit_despesa_path(despesa), class:'btn btn-primary rounded-pill bi bi-pencil-square text-white fs-6'  %>
+          <%= link_to '', despesa, method: :delete, class: 'btn btn-danger rounded-pill bi bi-trash3-fill', data: { confirm: 'Tem certeza?' } %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+

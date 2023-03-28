@@ -22,9 +22,9 @@ class UsersController < ApplicationController
 
   # POST /users or /users.json
   def create
+    params[:user][:nome] = params[:user][:nome].downcase
     @user = User.new(user_params)
 
-    
       if @user.save
         flash[:success] = "Usuário criado com sucesso!" 
         redirect_to users_path
@@ -36,7 +36,7 @@ class UsersController < ApplicationController
 
   # PATCH/PUT /users/1 or /users/1.json
   def update
-    
+    @user.nome = @user.nome.downcase
       if @user.update(user_params)
         flash[:success] = "Usuário editado com sucesso!" 
         redirect_to users_path
