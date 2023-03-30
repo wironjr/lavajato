@@ -25,7 +25,7 @@ class FinancasController < ApplicationController
       @servicos_quantidade_mes = @servicos_mensal.count
       @despesas_produtos_mes =  @despesas.where("DATE_PART('month', data) = ?", @mes).where(tipo: "PRODUTOS").sum(:valor)
       @despesas_geral_mes =  @despesas.where("DATE_PART('month', data) = ?", @mes).where.not(tipo: "PRODUTOS").sum(:valor)
-      @ticketmedio_mes = @servicos_lucro / @servicos_quantidade_mes if params[:mes_select].present? && @servicos_quantidade_mes != 0 
+      @ticketmedio_mes = @servicos_lucro / @servicos_quantidade_mes if @servicos_quantidade_mes != 0 
     else
       @ticketmedio_mes = @servicos_lucro / @servicos_quantidade_mes if @servicos_quantidade_mes != 0
     end
