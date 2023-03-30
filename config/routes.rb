@@ -13,6 +13,11 @@ Rails.application.routes.draw do
     get :mensal, on: :collection
   end
 
+  resources :financas do
+    get :mensal, on: :collection
+    get :individual, on: :collection
+  end
+
   get 'entrar', to: 'sessions#new'
   post 'entrar', to: 'sessions#create'
   delete 'sair', to: 'sessions#destroy'

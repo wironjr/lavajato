@@ -1,0 +1,96 @@
+<div class="mb-3 mt-3"><h1 class="">Financeiro Mensal</h1></div>
+<form>
+  <div class="row mt-4">
+    <div class="col-sm-2 mb-2">
+      <select name="mes_select" id="select-mes2" class="form-control">
+        <option selected disabled>Selecione o mês</option>
+      </select>
+    </div>
+    <div class="col-sm-1 mb-2">
+      <button type="submit" class="btn btn-primary">Pesquisar</button>
+    </div>
+    <div class="col-sm-2 mb-2">
+    <a href="/financas/mensal/" class="btn btn-primary">Limpar Filtro</a>
+    </div>
+  </div>
+</form>
+<div class="mt-5 text-center mb-3">
+  <div class="row gap-3 d-flex justify-content-center">
+    <div class="card shadow text-center text-bg-success" style="width: 10rem">
+      <h5 class="card-header">Valor total</h5>
+      <div class="card-body">
+        <h5 class="card-title fw-bold" style="text-shadow: 1px 1px #000"><%= numero_real(@servicos_total,2) %></h5>
+      </div>
+    </div>
+    <div class="card shadow text-center text-bg-primary" style="width: 10rem">
+      <h5 class="card-header">Lucro</h5>
+      <div class="card-body">
+        <h5 class="card-title fw-bold" style="text-shadow: 1px 1px #000"><%= numero_real(@servicos_lucro,2) %></h5>
+      </div>
+    </div>
+    <div class="card shadow text-center text-bg-danger" style="width: 10rem">
+      <h5 class="card-header">Despesas</h5>
+      <div class="card-body">
+        <h5 class="card-title fw-bold" style="text-shadow: 1px 1px #000"><%= numero_real(@despeses_mes,2) %></h5>
+      </div>
+    </div>
+    <div class="card shadow text-center text-bg-danger" style="width: 10rem">
+      <h5 class="card-header">Produtos</h5>
+      <div class="card-body">
+        <h5 class="card-title fw-bold" style="text-shadow: 1px 1px #000"><%= numero_real(@despesas_produtos_mes,2) %></h5>
+      </div>
+    </div>
+    <div class="card shadow text-center text-bg-danger" style="width: 10rem">
+      <h5 class="card-header">Geral</h5>
+      <div class="card-body">
+        <h5 class="card-title fw-bold" style="text-shadow: 1px 1px #000"><%= numero_real(@despesas_geral_mes,2) %></h5>
+      </div>
+    </div>
+</div>
+
+<div class="table-responsive mt-5">
+  <table class="table table-sm table-bordered">
+    <thead class="table-dark">
+      <tr>
+        <th style="width: 15%">Data/Hora</th>
+        <th style="width: 20%">Cliente</th>
+        <th style="width: 20%">Serviço</th>
+        <th style="width: 15%">Veículo</th>
+        <th>Caixa</th>
+        <th>Valor</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% @servicos_mensal.each do |servico| %>
+        <tr>
+          <td><%= servico.data.strftime('%d/%m/%Y %H:%M') %></td>
+          <td><%= servico.cliente.upcase %></td>
+          <td><%= servico.servico.upcase %></td>
+          <td><%= servico.veiculo.upcase %></td>
+          <td><%= servico.caixa.upcase %></td>
+
+          <td class="moeda"><%= numero_real(servico.valor, 2) %></td>
+          
+        </tr>
+      <% end %>
+			<tr>
+				<td colspan="5" class="text-end" >&nbsp;</td>
+				<td colspan="1" class=""><strong>Ticket Médio</strong><br> <%= numero_real(@ticketmedio_mes,2) %></td>
+			</tr>
+			<tr>
+				<td colspan="5" class="text-end" >&nbsp;</td>
+				<td  class=""><strong>Total</strong><br> <%= numero_real(@servicos_total,2) %></td>
+			</tr>
+    </tbody>
+  </table>
+</div>
+
+<script>
+monName = ["JANEIRO", "FEVEREIRO", "MARÇO", "ABRIL", "MAIO", "JUNHO", "JULHO", "AGOSTO", "SETEMBRO", "OUTUBRO", "NOVEMBRO", "DEZEMBRO"]
+var x = 1
+monName.forEach(function(item){
+  $('#select-mes2').append('<option value="'+ x++ +'">' + item.toUpperCase() + '</option>');
+});
+
+</script>
