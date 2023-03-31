@@ -1,1 +1,60 @@
-<%= @nome %>
+<h1 class="mt-3">
+  Financeiro Individual
+</h1>
+
+<div class="mt-5 text-center mb-3">
+  <div class="row gap-3 d-flex justify-content-center">
+    <div class="card shadow text-center text-bg-success" style="width: 10rem">
+      <h5 class="card-header">Valor Total</h5>
+      <div class="card-body">
+        <h6 class="card-title fw-bold" style="text-shadow: 1px 1px #000"><%= numero_real(@servicos_total,2) %></h6>
+      </div>
+    </div>
+    <div class="card shadow text-center text-bg-danger" style="width: 10rem">
+      <h5 class="card-header">Despesas</h5>
+      <div class="card-body">
+        <h6 class="card-title fw-bold" style="text-shadow: 1px 1px #000"><%= numero_real(@despeses_mes,2) %></h6>
+      </div>
+    </div>
+    <div class="card shadow text-center text-bg-success" style="width: 10rem">
+      <h5 class="card-header">Lucro total</h5>
+      <div class="card-body">
+        <h6 class="card-title fw-bold" style="text-shadow: 1px 1px #000"><%= numero_real(@servicos_lucro,2) %></h6>
+      </div>
+    </div>
+	</div>
+
+  <div class="row gap-3 d-flex justify-content-center mt-4">
+    <div class="card shadow text-center text-bg-primary" style="width: 13rem">
+      <h5 class="card-header">Lucro Individual</h5>
+      <div class="card-body">
+        <h6 class="card-title fw-bold" style="text-shadow: 1px 1px #000"><%= numero_real( @servicos_lucro_individual,2) %></h6>
+      </div>
+    </div>
+	</div>
+
+	<h3 class="mt-3">RECEBIDO</h3>
+
+  <div class="row gap-3 d-flex justify-content-center mt-2">
+		<% @users.each do |user| %>
+			<div class="card shadow text-center text-bg-danger" style="width: 10rem">
+				<h5 class="card-header"><%= user.nome.upcase %></h5>
+				<div class="card-body">
+					<h6 class="card-title fw-bold" style="text-shadow: 1px 1px #000"><%= numero_real(instance_variable_get("@recebido_#{user.nome}"),2) %></h6>
+				</div>
+			</div>
+		<% end %>
+	</div>
+
+	<h3 class="mt-3">FALTA RECEBER</h3>
+	<div class="row gap-3 d-flex justify-content-center mt-2 mb-5">
+		<% @users.each do |user| %>
+			<div class="card shadow text-center text-bg-primary" style="width: 10rem">
+				<h5 class="card-header"><%= user.nome.upcase %></h5>
+				<div class="card-body">
+					<h6 class="card-title fw-bold" style="text-shadow: 1px 1px #000"><%= numero_real(instance_variable_get("@falta_receber_#{user.nome}"),2) %></h6>
+				</div>
+			</div>
+		<% end %>
+	</div>
+</div>

@@ -53,6 +53,28 @@ class FinancasController < ApplicationController
   end
 
   def individual
+    @users = User.all
+    @despesas = Despesa.all
+    @servicos = Servico.all
+
+    ##### qnt de usuarios #####
+    @users_quantidade = @users.count
+
+    ##### lucro ######
+    @servicos_total = @servicos.where(data: Time.now.beginning_of_month..Time.now.end_of_month).where(pago: :true).map(&:valor).sum
+    @despeses_mes = @despesas.where(data: Time.now.beginning_of_month..Time.now.end_of_month).sum(:valor)
+    @servicos_lucro = @servicos_total - @despeses_mes
+    @servicos_lucro_individual =  @servicos_lucro / @users_quantidade
+
+    @users.each do |usuario|
+      recebido_usuario = Servico.where(caixa: usuario.nome.upcase).sum(:valor)
+      falta_receber = @servicos_lucro_individual - recebido_usuario
+      instance_variable_set("@recebido_#{usuario.nome}", recebido_usuario)
+      instance_variable_set("@falta_receber_#{usuario.nome}", falta_receber)
+      #binding.pry
+    end
+    
+    
   end
 
 end
