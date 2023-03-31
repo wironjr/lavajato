@@ -1,10 +1,14 @@
-<div class="mb-3 mt-3"><h1 class="">Financeiro Mensal</h1></div>
+<div class="mb-3 mt-3">
+  <h1 class="">Financeiro Mensal </h1>
+  <span class="text-danger fw-bold" style="font-size: 0.8rem !important" id="mes-atual-financeiro"></span>
+</div>
 <form>
   <div class="row mt-4">
     <div class="col-sm-2 mb-2">
       <select name="mes_select" id="select-mes2" class="form-control">
         <option selected disabled>Selecione o mês</option>
       </select>
+      
     </div>
     <div class="col-sm-1 mb-2">
       <button type="submit" class="btn btn-primary">Pesquisar</button>
@@ -19,72 +23,128 @@
     <div class="card shadow text-center text-bg-success" style="width: 10rem">
       <h5 class="card-header">Valor total</h5>
       <div class="card-body">
-        <h5 class="card-title fw-bold" style="text-shadow: 1px 1px #000"><%= numero_real(@servicos_total,2) %></h5>
+        <h6 class="card-title fw-bold" style="text-shadow: 1px 1px #000"><%= numero_real(@servicos_total,2) %></h6>
       </div>
     </div>
     <div class="card shadow text-center text-bg-primary" style="width: 10rem">
       <h5 class="card-header">Lucro</h5>
       <div class="card-body">
-        <h5 class="card-title fw-bold" style="text-shadow: 1px 1px #000"><%= numero_real(@servicos_lucro,2) %></h5>
+        <h6 class="card-title fw-bold" style="text-shadow: 1px 1px #000"><%= numero_real(@servicos_lucro,2) %></h6>
+      </div>
+    </div>
+    <div class="card shadow text-center text-bg-success" style="width: 10rem;">
+      <h5 class="card-header" style="font-size: 1.1rem !important">Quantidade</h5>
+      <div class="card-body">
+        <h6 class="card-title fw-bold" style="text-shadow: 1px 1px #000"><%= pluralize(@servicos_quantidade_mes, 'serviço' , 'serviços') %></h6>
       </div>
     </div>
     <div class="card shadow text-center text-bg-danger" style="width: 10rem">
       <h5 class="card-header">Despesas</h5>
       <div class="card-body">
-        <h5 class="card-title fw-bold" style="text-shadow: 1px 1px #000"><%= numero_real(@despeses_mes,2) %></h5>
+        <h6 class="card-title fw-bold" style="text-shadow: 1px 1px #000"><%= numero_real(@despeses_mes,2) %></h6>
       </div>
     </div>
     <div class="card shadow text-center text-bg-danger" style="width: 10rem">
       <h5 class="card-header">Produtos</h5>
       <div class="card-body">
-        <h5 class="card-title fw-bold" style="text-shadow: 1px 1px #000"><%= numero_real(@despesas_produtos_mes,2) %></h5>
+        <h6 class="card-title fw-bold" style="text-shadow: 1px 1px #000"><%= numero_real(@despesas_produtos_mes,2) %></h6>
       </div>
     </div>
     <div class="card shadow text-center text-bg-danger" style="width: 10rem">
       <h5 class="card-header">Geral</h5>
       <div class="card-body">
-        <h5 class="card-title fw-bold" style="text-shadow: 1px 1px #000"><%= numero_real(@despesas_geral_mes,2) %></h5>
+        <h6 class="card-title fw-bold" style="text-shadow: 1px 1px #000"><%= numero_real(@despesas_geral_mes,2) %></h6>
       </div>
     </div>
 </div>
 
-<div class="table-responsive mt-5">
-  <table class="table table-sm table-bordered">
-    <thead class="table-dark">
-      <tr>
-        <th style="width: 15%">Data/Hora</th>
-        <th style="width: 20%">Cliente</th>
-        <th style="width: 20%">Serviço</th>
-        <th style="width: 15%">Veículo</th>
-        <th>Caixa</th>
-        <th>Valor</th>
-      </tr>
-    </thead>
+<ul class="nav nav-tabs mt-5" id="myTab" role="tablist">
+  <li class="nav-item" role="presentation">
+    <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home-tab-pane" type="button" role="tab" aria-controls="home-tab-pane" aria-selected="true">Relatório de serviços</button>
+  </li>
+  <li class="nav-item" role="presentation">
+    <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile-tab-pane" type="button" role="tab" aria-controls="profile-tab-pane" aria-selected="false">Relatório de despesas</button>
+  </li>
+</ul>
+<div class="tab-content" id="myTabContent">
+  <div class="tab-pane fade show active" id="home-tab-pane" role="tabpanel" aria-labelledby="home-tab" tabindex="0">
+    <div class="table-responsive">
+      <table class="table table-sm table-bordered">
+        <thead class="table-dark">
+          <tr>
+            <th style="width: 15%">Data/Hora</th>
+            <th style="width: 20%">Cliente</th>
+            <th style="width: 20%">Serviço</th>
+            <th style="width: 15%">Veículo</th>
+            <th>Caixa</th>
+            <th>Valor</th>
+          </tr>
+        </thead>
 
-    <tbody>
-      <% @servicos_mensal.each do |servico| %>
-        <tr>
-          <td><%= servico.data.strftime('%d/%m/%Y %H:%M') %></td>
-          <td><%= servico.cliente.upcase %></td>
-          <td><%= servico.servico.upcase %></td>
-          <td><%= servico.veiculo.upcase %></td>
-          <td><%= servico.caixa.upcase %></td>
+        <tbody>
+          <% @servicos_mensal.each do |servico| %>
+            <tr>
+              <td><%= servico.data.strftime('%d/%m/%Y %H:%M') %></td>
+              <td><%= servico.cliente.upcase %></td>
+              <td><%= servico.servico.upcase %></td>
+              <td><%= servico.veiculo.upcase %></td>
+              <td><%= servico.caixa.upcase %></td>
 
-          <td class="moeda"><%= numero_real(servico.valor, 2) %></td>
-          
-        </tr>
-      <% end %>
-			<tr>
-				<td colspan="5" class="text-end" >&nbsp;</td>
-				<td colspan="1" class=""><strong>Ticket Médio</strong><br> <%= numero_real(@ticketmedio_mes,2) %></td>
-			</tr>
-			<tr>
-				<td colspan="5" class="text-end" >&nbsp;</td>
-				<td  class=""><strong>Total</strong><br> <%= numero_real(@servicos_total,2) %></td>
-			</tr>
-    </tbody>
-  </table>
+              <td class="moeda"><%= numero_real(servico.valor, 2) %></td>
+              
+            </tr>
+          <% end %>
+          <tr>
+            <td colspan="5" class="text-end" >&nbsp;</td>
+            <td colspan="1" class=""><strong>Ticket Médio</strong><br> <%= numero_real(@ticketmedio_mes,2) %></td>
+          </tr>
+          <tr>
+            <td colspan="5" class="text-end" >&nbsp;</td>
+            <td  class=""><strong>Total</strong><br> <%= numero_real(@servicos_total,2) %></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="tab-pane fade" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">
+    <div class="table-responsive">
+      <table class="table table-sm table-bordered">
+        <thead class="table-dark">
+          <tr>
+            <th style="width: 15%">Data/Hora</th>
+            <th style="width: 20%">Observação</th>
+            <th style="width: 20%">Tipo</th>
+            <th style="width: 15%">Valor</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <% @despesas_mensal.each do |despesa| %>
+            <tr>
+              <td><%= despesa.data.strftime('%d/%m/%Y %H:%M') %></td>
+              <td><%= despesa.observacao.upcase %></td>
+              <td><%= despesa.tipo.upcase %></td>
+
+              <td class="moeda"><%= numero_real(despesa.valor, 2) %></td>
+              
+            </tr>
+          <% end %>
+          <tr>
+            <td colspan="3" class="text-end" >&nbsp;</td>
+            <td colspan="1" class=""><strong>Média despesas</strong><br> <%= numero_real(@despesas_media_valor,2) %></td>
+          </tr>
+          <tr>
+            <td colspan="3" class="text-end" >&nbsp;</td>
+            <td  class=""><strong>Total</strong><br> <%= numero_real(@despesas_valor,2) %></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
 </div>
+
+
+
 
 <script>
 monName = ["JANEIRO", "FEVEREIRO", "MARÇO", "ABRIL", "MAIO", "JUNHO", "JULHO", "AGOSTO", "SETEMBRO", "OUTUBRO", "NOVEMBRO", "DEZEMBRO"]
@@ -93,4 +153,23 @@ monName.forEach(function(item){
   $('#select-mes2').append('<option value="'+ x++ +'">' + item.toUpperCase() + '</option>');
 });
 
+urlParams = new URLSearchParams(location.search);
+
+selectedMonthIndex = parseInt(urlParams.get('mes_select')) - 1;
+$('#mes-atual-financeiro').text(
+  selectedMonthIndex >= 0 && selectedMonthIndex <= 11
+    ? '(FILTRO DE MÊS ' + monName[selectedMonthIndex] + ')'
+    : isNaN(selectedMonthIndex) ? monName[now.getMonth()] : ''
+);
+
+
+var triggerTabList = document.querySelectorAll('#myTab button')
+triggerTabList.forEach(triggerEl => {
+  var tabTrigger = new bootstrap.Tab(triggerEl)
+
+  triggerEl.addEventListener('click', event => {
+    event.preventDefault()
+    tabTrigger.show()
+  })
+})
 </script>
