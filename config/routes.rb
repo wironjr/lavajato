@@ -6,6 +6,9 @@ Rails.application.routes.draw do
   resources :despesas do
     get :produtos, on: :collection
     get :geral, on: :collection
+    get :vale, on: :collection
+    get :mensal, on: :collection
+
   end
 
   resources :servicos do
@@ -17,6 +20,7 @@ Rails.application.routes.draw do
     get :mensal, on: :collection
     get :individual, on: :collection
   end
+
 
   get 'entrar', to: 'sessions#new'
   post 'entrar', to: 'sessions#create'

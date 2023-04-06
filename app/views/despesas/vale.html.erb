@@ -1,6 +1,6 @@
-<div><%= link_to '', new_despesa_path(tipo_params: "PRODUTOS"), class: 'bi-plus-circle-fill fs-1 float-end ' %></div>
+<div><%= link_to '', new_despesa_path(tipo_params: "VALE"), class: 'bi-plus-circle-fill fs-1 float-end ' %></div>
 
-<h1 class="mt-2">Despesas em produtos</h1>
+<h1 class="mt-2">Despesas em vales</h1>
 
 <div class=" d-flex justify-content-center mt-3 gap-4 mb-4" >
   <div class="card shadow text-center text-bg-primary" style="width: 10rem">
@@ -23,6 +23,7 @@
       <th>Data</th>
       <th>Observação</th>
       <th>Tipo</th>
+      <th>Vale</th>
       <th>Valor</th>
       <th colspan="3">Ações</th>
     </tr>
@@ -34,6 +35,7 @@
         <td><%= despesa.data.strftime('%d/%m/%Y %H:%M') %></td>
         <td><%= despesa.observacao.upcase %></td>
         <td><%= despesa.tipo %></td>
+        <td><%= despesa.vale.upcase %></td>
         <td><%= numero_real(despesa.valor,2) %></td>
         <td>
           <%= link_to '', edit_despesa_path(despesa), class:'btn btn-primary rounded-pill bi bi-pencil-square text-white fs-6'  %>

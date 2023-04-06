@@ -4,6 +4,7 @@ class CreateDespesas < ActiveRecord::Migration[6.1]
       t.datetime :data
       t.string :observacao
       t.string :tipo
+      t.string :vale
       t.decimal :valor, precision: 10, scale: 2
 
       t.timestamps

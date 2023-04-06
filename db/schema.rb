@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_03_27_175358) do
+ActiveRecord::Schema.define(version: 2023_04_05_145508) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -19,9 +19,11 @@ ActiveRecord::Schema.define(version: 2023_03_27_175358) do
     t.datetime "data"
     t.string "observacao"
     t.string "tipo"
+    t.string "vale"
     t.decimal "valor", precision: 10, scale: 2
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "funcionario", default: ""
   end
 
   create_table "servicos", force: :cascade do |t|
@@ -41,6 +43,7 @@ ActiveRecord::Schema.define(version: 2023_03_27_175358) do
     t.string "password_digest", default: "", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "tipo", default: ""
   end
 
 end

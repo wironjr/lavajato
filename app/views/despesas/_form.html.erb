@@ -11,8 +11,20 @@
   </div>
   <div class="form-group mb-2">
     <%= form.label :tipo %>
-    <%= form.select :tipo, [["PRODUTOS"], ["GERAL"], ["FIXA"]],{}, class: "form-control text-uppercase" %>
+    <%= form.select :tipo, options_for_select([["PRODUTOS", "PRODUTOS"], ["GERAL", "GERAL"], ["FUNCIONÁRIO", "FUNCIONÁRIO"], ["VALE", "VALE"]], params[:tipo_params]), {include_blank: "Selecione"}, class: "form-control text-uppercase" %>
+    <%# binding.pry %>
   </div>
+
+  <div class="form-group mb-2  " id="div-vale">
+    <%= form.label :vale, 'Vale' %>
+    <%= form.select :vale, @users.map { |u| [u.nome.upcase] },{include_blank: "Selecione"}, class: "form-control text-uppercase" %>
+  </div>
+
+  <div class="form-group mb-2  " id="div-func">
+    <%= form.label :funcionario, 'Funcionário' %>
+    <%= form.select :funcionario, @users_func.map { |u| [u.nome.upcase] },{include_blank: "Selecione"}, class: "form-control text-uppercase" %>
+  </div>
+  
   <div class="form-group mb-2">
     <%= form.label :valor %>
     <%= form.text_field :valor, value: params[:action] == 'edit' ? numero_real(@despesa.valor,2) : '', class: "form-control moeda" %>
@@ -24,7 +36,7 @@
 <% end %>
 
 
- <script>
+<script>
   $(document).ready(function(){
     $('.moeda').maskMoney({
       prefix: 'R$ ',
@@ -32,4 +44,33 @@
       thousands: '.'
     });
   });
-  </script>
+
+$("#div-vale").hide()
+$("#div-func").hide()
+
+$(document).ready(function(){
+  if($("#despesa_tipo").val() == 'VALE'){
+    $("#div-vale").show()
+    $("#div-func").hide()
+  }else if($("#despesa_tipo").val() == 'FUNCIONÁRIO'){
+    $("#div-func").show()
+    $("#div-vale").hide()
+  }else{
+    $("#div-vale").hide()
+    $("#div-func").hide()
+  }
+})
+
+$("#despesa_tipo").change(function(){
+  if($("#despesa_tipo").val() == 'VALE'){
+    $("#div-vale").show()
+    $("#div-func").hide()
+  }else if($("#despesa_tipo").val() == 'FUNCIONÁRIO'){
+    $("#div-func").show()
+    $("#div-vale").hide()
+  }else{
+    $("#div-vale").hide()
+    $("#div-func").hide()
+  }
+})
+</script>

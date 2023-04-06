@@ -10,7 +10,7 @@
 <div class="mt-5 text-center mb-3">
   <div class="mb-3"><h2 class="">ACOMPANHAMENTO MENSAL</h2></div>
   <div class="row gap-3 d-flex justify-content-center">
-    <div class="card shadow text-center text-bg-success" style="width: 10rem"
+    <div class="card shadow text-center text-bg-success" style="width: 12rem"
       data-bs-toggle="tooltip" data-bs-placement="left"
         data-bs-custom-class="custom-tooltip"
         data-bs-title="Valor total arrecadado no mês.">
@@ -19,7 +19,7 @@
         <h5 class="card-title fw-bold" style="text-shadow: 1px 1px #000"><%= numero_real(@servicos_total,2) %></h5>
       </div>
     </div>
-    <div class="card shadow text-center text-bg-primary" style="width: 10rem"
+    <div class="card shadow text-center text-bg-primary" style="width: 12rem"
       data-bs-toggle="tooltip" data-bs-placement="bottom"
         data-bs-custom-class="custom-tooltip"
         data-bs-title="Valor lucro arrecadado no mês.">
@@ -28,7 +28,7 @@
         <h5 class="card-title fw-bold" style="text-shadow: 1px 1px #000"><%= numero_real(@servicos_lucro,2) %></h5>
       </div>
     </div>
-    <div class="card shadow text-center text-bg-secondary" style="width: 10rem"
+    <div class="card shadow text-center text-bg-secondary" style="width: 12rem"
         data-bs-toggle="tooltip" data-bs-placement="bottom"
         data-bs-custom-class="custom-tooltip"
         data-bs-title="Quantidade de serviços mensal.">
@@ -37,7 +37,7 @@
         <h5 class="card-title fw-bold" style="text-shadow: 1px 1px #000; font-size: 1rem"><%= pluralize(@servicos_quantidade_mes, 'serviço', 'serviços') %></h5>
       </div>
     </div>
-    <div class="card shadow text-center text-bg-danger" style="width: 10rem"
+    <div class="card shadow text-center text-bg-danger" style="width: 12rem"
         data-bs-toggle="tooltip" data-bs-placement="right"
         data-bs-custom-class="custom-tooltip"
         data-bs-title="Serviços que não foi marcado o pagamento.">

@@ -1,7 +1,7 @@
 <div><%= link_to '', new_despesa_path, class: 'bi-plus-circle-fill fs-1 float-end ' %></div>
 
 
-<h1 class="mt-2">Despesas</h1>
+<h1 class="mt-2">Despesas Mensal</h1>
 
 <div class=" d-flex justify-content-center mt-3 gap-2 flex-wrap" >
   <div class="card shadow text-center text-bg-primary" style="width: 10rem">
@@ -17,13 +17,36 @@
     </div>
   </div>
   <% if @despesas_maior_valor.first %>
-    <div class="card shadow text-center text-bg-danger" style="width: 10rem" title="<%= @despesas_maior_valor.first.observacao.upcase %>">
+    <div class="card shadow text-center text-bg-secondary" style="width: 10rem" title="<%= @despesas_maior_valor.first.observacao.upcase %>">
       <h5 class="card-header" >Maior valor</h5>
       <div class="card-body ">
         <h5 class="card-title fw-bold" style="text-shadow: 1px 1px #000" ><%= numero_real(@despesas_maior_valor.first.valor,2) %></h5>
       </div>
     </div>
   <% end %>
+</div>
+
+<div class=" d-flex justify-content-center mt-3 gap-2 flex-wrap" >
+  <div class="card shadow text-center text-bg-danger" style="width: 10rem">
+    <h5 class="card-header" ><%=  pluralize(@despesa_vale_qnt, 'VALE', 'VALES')%></h5>
+    <div class="card-body">
+      <h5 class="card-title fw-bold" style="text-shadow: 1px 1px #000"><%= numero_real(@despesa_vale_valor,2) %></h5>
+    </div>
+  </div>
+
+  <div class="card shadow text-center text-bg-danger" style="width: 10rem">
+    <h5 class="card-header" ><%=  pluralize(@despesa_produto_qnt, 'PRODUTO', 'PRODUTOS')%></h5>
+    <div class="card-body">
+      <h5 class="card-title fw-bold" style="text-shadow: 1px 1px #000"><%= numero_real(@despesa_produto_valor,2) %></h5>
+    </div>
+  </div>
+  
+  <div class="card shadow text-center text-bg-danger" style="width: 10rem">
+    <h6 class="card-header" style="font-size: 0.9rem !important"><%=  pluralize(@despesa_func_qnt, 'FUNCIONÁRIO', 'FUNCIONÁRIOS')%></h6>
+    <div class="card-body">
+      <h5 class="card-title fw-bold" style="text-shadow: 1px 1px #000"><%= numero_real(@despesa_func_valor,2) %></h5>
+    </div>
+  </div>
 </div>
 
 <table class="table mt-4">

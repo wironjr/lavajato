@@ -6,7 +6,8 @@
     <thead>
     <tr>
       <th style="width: 15%">Data</th>
-      <th style="width: 75%">Usuário</th>
+      <th style="width: 40%">Usuário</th>
+      <th >Tipo</th>
       <th colspan="3"></th>
     </tr>
   </thead>
@@ -16,6 +17,7 @@
       <tr>
         <td><%= user.created_at.to_date.strftime('%d/%m/%Y') %></td>
         <td><%= user.nome %></td>
+        <td><%= user.tipo %></td>
         <td>
             <%#= link_to 'Show', servico %>
             <%= link_to '', edit_user_path(user), class:'btn btn-primary rounded-pill bi bi-pencil-square text-white fs-6'  %>

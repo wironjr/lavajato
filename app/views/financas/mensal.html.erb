@@ -123,7 +123,7 @@
             <tr>
               <td><%= despesa.data.strftime('%d/%m/%Y %H:%M') %></td>
               <td><%= despesa.observacao.upcase %></td>
-              <td><%= despesa.tipo.upcase %></td>
+              <td><%= despesa.tipo %> <%= despesa.funcionario.present? ? despesa.funcionario : '' %></td>
 
               <td class="moeda"><%= numero_real(despesa.valor, 2) %></td>
               

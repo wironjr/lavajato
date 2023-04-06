@@ -8,11 +8,16 @@
   </div>
 
   <div class="form-group mb-2">
+    <%= form.label :tipo %>
+    <%= form.select :tipo,[["ADMINISTRADOR"], ["FUNCIONÁRIO"], ["FUNCIONÁRIO COM ACESSO"]],{}, class: "form-control" %>
+  </div>
+
+  <div class="form-group mb-2 div-senha">
     <%= form.label :password, 'Senha' %>
     <%= form.password_field :password, class: "form-control"  %>
   </div>
 
-  <div class="form-group mb-2">
+  <div class="form-group mb-2 div-senha">
     <%= form.label :password_confirmation, 'Confirme a senha' %>
     <%= form.password_field :password_confirmation, class: "form-control"  %>
   </div>
@@ -23,3 +28,19 @@
   </div>
 
 <% end %>
+
+<script>
+  $(document).ready(function(){
+  $("#user_tipo").change(function(){
+    if($("#user_tipo").val() == "FUNCIONÁRIO"){
+      $("#user_password").val("carro!!28") 
+      $("#user_password_confirmation").val("carro!!28")
+      $(".div-senha").hide() 
+    }else{
+      $("#user_password").val("") 
+      $("#user_password_confirmation").val("")
+      $(".div-senha").show() 
+    }
+  })
+  })
+</script>
