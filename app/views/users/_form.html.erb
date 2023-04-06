@@ -30,11 +30,19 @@
 <% end %>
 
 <script>
+function generateRandomCode() {
+  var code = '';
+  for (var i = 0; i < 6; i++) {
+    code += Math.floor(Math.random() * 10);
+  }
+  return code;
+}
   $(document).ready(function(){
   $("#user_tipo").change(function(){
     if($("#user_tipo").val() == "FUNCIONÁRIO"){
-      $("#user_password").val("carro!!28") 
-      $("#user_password_confirmation").val("carro!!28")
+      var code = generateRandomCode();
+      $("#user_password").val(code) 
+      $("#user_password_confirmation").val(code)
       $(".div-senha").hide() 
     }else{
       $("#user_password").val("") 
