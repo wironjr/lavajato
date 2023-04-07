@@ -4,7 +4,7 @@ class DespesasController < ApplicationController
 
   # GET /despesas or /despesas.json
   def index
-    @despesas = Despesa.all.order(:tipo)
+    @despesas = Despesa.all.order(:data)
     @despesas_total = @despesas.sum(:valor)
     @despesas_total_qnt = @despesas.count
     @despesas_maior_valor = @despesas.order(valor: :desc).limit(1)
@@ -15,7 +15,7 @@ class DespesasController < ApplicationController
   end
 
   def mensal
-    @despesas = Despesa.where(data: Time.now.beginning_of_month..Time.now.end_of_month).order(:tipo)
+    @despesas = Despesa.where(data: Time.now.beginning_of_month..Time.now.end_of_month).order(:data)
     @despesas_total = @despesas.sum(:valor)
     @despesas_total_qnt = @despesas.count
     @despesas_maior_valor = @despesas.order(valor: :desc).limit(1)
@@ -33,19 +33,19 @@ class DespesasController < ApplicationController
 
 
   def vale
-    @despesas = Despesa.where(tipo: "VALE")
+    @despesas = Despesa.where(tipo: "VALE").order(:data)
     @despesas_total = @despesas.sum(:valor)
     @despesas_total_qnt = @despesas.count
   end
   
   def produtos
-    @despesas = Despesa.where(tipo: "PRODUTOS")
+    @despesas = Despesa.where(tipo: "PRODUTOS").order(:data)
     @despesas_total = @despesas.sum(:valor)
     @despesas_total_qnt = @despesas.count
   end
 
   def geral
-    @despesas = Despesa.where.not(tipo: ["PRODUTOS", "VALE"])
+    @despesas = Despesa.where.not(tipo: ["PRODUTOS", "VALE"]).order(:data)
     @despesas_total = @despesas.sum(:valor)
     @despesas_total_qnt = @despesas.count
   end

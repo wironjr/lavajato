@@ -4,7 +4,7 @@ class ServicosController < ApplicationController
 
   # GET /servicos or /servicos.json
   def index
-    @servicos = Servico.all
+    @servicos = Servico.all.order(:data)
     @servicos_do_dia = @servicos.where("to_char(data,'YYYY-MM-DD') = '#{Time.now.to_date.to_s}'")
     @servicos_total = @servicos.where("to_char(data,'YYYY-MM-DD') = '#{Time.now.to_date.to_s}'").where(pago: :true).map(&:valor).sum
     @servicos_quantidade_diario = @servicos.where("to_char(data,'YYYY-MM-DD') = '#{Time.now.to_date.to_s}'").count
@@ -13,7 +13,7 @@ class ServicosController < ApplicationController
   end
 
   def todos
-    @servicos = Servico.all
+    @servicos = Servico.all.order(:data)
     @servicos_total = @servicos.map(&:valor).sum
     @servicos_quantidade = @servicos.count
     @servicos_pago_pendedente = @servicos.where(pago: :false).count
@@ -32,7 +32,7 @@ class ServicosController < ApplicationController
   end
 
   def mensal
-    @servicos_all = Servico.all
+    @servicos_all = Servico.all.order(:data)
     @servicos = @servicos_all.where(data: Time.now.beginning_of_month..Time.now.end_of_month)
     @servicos_total = @servicos_all.where(data: Time.now.beginning_of_month..Time.now.end_of_month).where(pago: :true).map(&:valor).sum
     @servicos_pago_pendedente = @servicos.where(pago: :false).count
