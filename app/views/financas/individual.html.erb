@@ -3,7 +3,7 @@
 <form>
   <div class="row mt-4">
     <div class="col-sm-2 mb-2">
-      <input type="month" class="form-control" name="mes_select">
+      <input type="month" class="form-control" name="mes_select" value="<%= params[:mes_select].present? ? params[:mes_select] : DateTime.now.strftime("%Y-%m") %>">
       <!--<select name="mes_select" id="select-mes-financas" class="form-control">
         <option selected disabled>Selecione o mês</option>
       </select>-->
@@ -161,12 +161,11 @@ var selectedMonthIndex = parseInt(selectedMonthIndex.slice(5)) -1;
 
 $('#mes-atual').text(
   selectedMonthIndex >= 0 && selectedMonthIndex <= 11
-    ? monName[selectedMonthIndex] + " " + selectedYearIndex
-    : isNaN(selectedMonthIndex) || isNaN(selectedYearIndex) ? monName[now.getMonth()] + " " + now.getFullYear() : ''
+    ? monName[selectedMonthIndex] + " " + selectedYearIndex : ''
 );
 
 //var x = 1
-//monName.forEach(function(item){
+//monNe.forEach(function(item){
    // $('#select-mes-financas').append('<option value="'+ x++ +'">' + item.toUpperCase() + '</option>');
 //});
 

@@ -104,16 +104,20 @@ class FinancasController < ApplicationController
       @users_quantidade = @users.count
 
       ##### lucro ######
-      @servicos_total = @servicos.where("DATE_PART('month', data) = ?", mes).where(pago: :true).map(&:valor).sum
-      @despeses_mes = @despesas.where("DATE_PART('month', data) = ?", mes).where.not(tipo: "VALE").sum(:valor)
+      @servicos_total = @servicos.where("DATE_PART('year', data) = ? AND DATE_PART('month', data) = ?", ano, mes).where(pago: :true).map(&:valor).sum
+      @despeses_mes = @despesas.where("DATE_PART('year', data) = ? AND DATE_PART('month', data) = ?", ano, mes).where.not(tipo: "VALE").sum(:valor)
       @servicos_lucro = @servicos_total - @despeses_mes
-      @servicos_lucro_individual =  @servicos_lucro / @users_quantidade
+      if @users_quantidade > 0
+        @servicos_lucro_individual =  @servicos_lucro / @users_quantidade
+      else
+        @servicos_lucro_individual = 0
+      end
 
       @users.each do |usuario|
-        recebido_usuario = Servico.where("DATE_PART('month', data) = ?", mes).where(caixa: usuario.nome.upcase).sum(:valor) + @despesas.where("DATE_PART('month', data) = ?", mes).where(tipo: "VALE").where(vale: usuario.nome.upcase).sum(:valor)
+        recebido_usuario = Servico.where("DATE_PART('year', data) = ? AND DATE_PART('month', data) = ?", ano, mes).where(caixa: usuario.nome.upcase).sum(:valor) + @despesas.where("DATE_PART('year', data) = ? AND DATE_PART('month', data) = ?", ano, mes).where(tipo: "VALE").where(vale: usuario.nome.upcase).sum(:valor)
         falta_receber = @servicos_lucro_individual - recebido_usuario
-        detalhe_recebido_despesa = @despesas.where("DATE_PART('month', data) = ?", mes).where(tipo: "VALE").where(vale: usuario.nome.upcase)
-        detalhe_recebido_servico = Servico.where("DATE_PART('month', data) = ?", mes).where(caixa: usuario.nome.upcase)
+        detalhe_recebido_despesa = @despesas.where("DATE_PART('year', data) = ? AND DATE_PART('month', data) = ?", ano, mes).where(tipo: "VALE").where(vale: usuario.nome.upcase)
+        detalhe_recebido_servico = Servico.where("DATE_PART('year', data) = ? AND DATE_PART('month', data) = ?", ano, mes).where(caixa: usuario.nome.upcase)
   
         instance_variable_set("@recebido_#{usuario.nome}", recebido_usuario)
         instance_variable_set("@falta_receber_#{usuario.nome}", falta_receber)
