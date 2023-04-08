@@ -5,10 +5,7 @@
 <form>
   <div class="row mt-4">
     <div class="col-sm-2 mb-2">
-      <select name="mes_select" id="select-mes2" class="form-control">
-        <option selected disabled>Selecione o mês</option>
-      </select>
-      
+      <input type="month" class="form-control" name="mes_select" value="<%= params[:mes_select].present? ? params[:mes_select] : DateTime.now.strftime("%Y-%m") %>">
     </div>
     <div class="col-sm-1 mb-2">
       <button type="submit" class="btn btn-primary">Pesquisar</button>

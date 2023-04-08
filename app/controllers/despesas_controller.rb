@@ -1,6 +1,7 @@
 class DespesasController < ApplicationController
   before_action :require_logged_in_user
   before_action :set_despesa, only: %i[ show edit update destroy ]
+  include Pagy::Backend
 
   # GET /despesas or /despesas.json
   def index
@@ -10,6 +11,7 @@ class DespesasController < ApplicationController
     @despesas_maior_valor = @despesas.order(valor: :desc).limit(1)
     @despesas_maior_valor2 = @despesas.maximum(:valor)
     
+    @pagy, @despesas = pagy(@despesas)
     #binding.pry
     
   end
@@ -29,6 +31,8 @@ class DespesasController < ApplicationController
     
     @despesa_func_qnt = @despesas.where(tipo: "FUNCIONÁRIO").count
     @despesa_func_valor = @despesas.where(tipo: "FUNCIONÁRIO").sum(:valor)
+
+    @pagy, @despesas = pagy(@despesas)
   end
 
 
@@ -36,18 +40,21 @@ class DespesasController < ApplicationController
     @despesas = Despesa.where(tipo: "VALE").order(:data)
     @despesas_total = @despesas.sum(:valor)
     @despesas_total_qnt = @despesas.count
+    @pagy, @despesas = pagy(@despesas)
   end
   
   def produtos
     @despesas = Despesa.where(tipo: "PRODUTOS").order(:data)
     @despesas_total = @despesas.sum(:valor)
     @despesas_total_qnt = @despesas.count
+    @pagy, @despesas = pagy(@despesas)
   end
 
   def geral
     @despesas = Despesa.where.not(tipo: ["PRODUTOS", "VALE"]).order(:data)
     @despesas_total = @despesas.sum(:valor)
     @despesas_total_qnt = @despesas.count
+    @pagy, @despesas = pagy(@despesas)
   end
 
   # GET /despesas/new

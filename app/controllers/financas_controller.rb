@@ -34,17 +34,20 @@ class FinancasController < ApplicationController
     @despesas_geral_mes = @despesas.where.not(tipo: ["PRODUTOS","VALE"]).where(data: Time.now.beginning_of_month..Time.now.end_of_month).sum(:valor)
     
     if params[:mes_select]
-      @mes = params[:mes_select] || Time.now.month
-      @servicos_mensal = @servicos.where("DATE_PART('month', data) = ?", @mes) if params[:mes_select].present?
-      @despesas_mensal = @despesas.where("DATE_PART('month', data) = ?", @mes) if params[:mes_select].present?
-      @despeses_mes = @despesas.where("DATE_PART('month', data) = ?", @mes).sum(:valor)
+      @mes = params[:mes_select]
+      ano = @mes.split("-")[0].to_i
+      mes = @mes.split("-")[1].to_i
+
+      @servicos_mensal = @servicos.where("DATE_PART('year', data) = ? AND DATE_PART('month', data) = ?", ano, mes) if params[:mes_select].present?
+      @despesas_mensal = @despesas.where("DATE_PART('year', data) = ? AND DATE_PART('month', data) = ?", ano, mes) if params[:mes_select].present?
+      @despeses_mes = @despesas.where("DATE_PART('year', data) = ? AND DATE_PART('month', data) = ?", ano, mes).sum(:valor)
       @despesas_valor = @despesas_mensal.sum(:valor)
       @despesas_media_valor = @despesas_valor / @despesas_mensal.count if @despesas_mensal.count > 0 
       @servicos_total = @servicos_mensal.map(&:valor).sum
       @servicos_lucro = @servicos_total - @despeses_mes
       @servicos_quantidade_mes = @servicos_mensal.count
-      @despesas_produtos_mes =  @despesas.where("DATE_PART('month', data) = ?", @mes).where(tipo: "PRODUTOS").sum(:valor)
-      @despesas_geral_mes =  @despesas.where("DATE_PART('month', data) = ?", @mes).where.not(tipo: "PRODUTOS").sum(:valor)
+      @despesas_produtos_mes =  @despesas.where("DATE_PART('year', data) = ? AND DATE_PART('month', data) = ?", ano, mes).where(tipo: "PRODUTOS").sum(:valor)
+      @despesas_geral_mes =  @despesas.where("DATE_PART('year', data) = ? AND DATE_PART('month', data) = ?", ano, mes).where.not(tipo: "PRODUTOS").sum(:valor)
       @ticketmedio_mes = @servicos_lucro / @servicos_quantidade_mes if @servicos_quantidade_mes != 0 
     else
       @ticketmedio_mes = @servicos_lucro / @servicos_quantidade_mes if @servicos_quantidade_mes != 0

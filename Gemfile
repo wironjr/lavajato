@@ -24,6 +24,8 @@ gem 'chartkick'
 gem "highcharts-rails"
 gem 'strftime'
 
+gem 'pagy', '~> 6.0' # omit patch digit
+
 gem 'groupdate', '~> 2.5', '>= 2.5.2'
 
 gem 'bootstrap', '~> 5.1'

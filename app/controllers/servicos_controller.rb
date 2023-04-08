@@ -1,6 +1,7 @@
 class ServicosController < ApplicationController
   before_action :require_logged_in_user
   before_action :set_servico, only: %i[ show edit update destroy ]
+  include Pagy::Backend
 
   # GET /servicos or /servicos.json
   def index
@@ -10,6 +11,8 @@ class ServicosController < ApplicationController
     @servicos_quantidade_diario = @servicos.where("to_char(data,'YYYY-MM-DD') = '#{Time.now.to_date.to_s}'").count
     @servicos_pago_pendedente = @servicos.where("to_char(data,'YYYY-MM-DD') = '#{Time.now.to_date.to_s}'").where(pago: :false).count
     @users = User.all.select("id","nome").order(:nome)
+
+    @pagy, @servicos = pagy(@servicos)
   end
 
   def todos
@@ -29,6 +32,8 @@ class ServicosController < ApplicationController
         @servicos_pago_pendedente = @servicos.where(pago: :false).count
       end
     end
+
+    @pagy, @servicos = pagy(@servicos)
   end
 
   def mensal
@@ -51,6 +56,8 @@ class ServicosController < ApplicationController
       @servicos_quantidade_mes = @servicos_all.where(data: Time.now.beginning_of_month..Time.now.end_of_month).count
       @servicos_pago_pendedente = @servicos.where(pago: :false).count
     end
+
+    @pagy, @servicos = pagy(@servicos)
   end
 
   # GET /servicos/1 or /servicos/1.json

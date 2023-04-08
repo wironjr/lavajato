@@ -81,7 +81,12 @@
   </table>
 </div>
 
-<%= link_to "Voltar", servicos_path, class: "btn btn-primary active" %>
+<div class="div-pagy mt-3">
+  <%== pagy_bootstrap_nav(@pagy) %>
+<%= link_to "Voltar", servicos_path, class: "btn btn-primary active mt-3" %>
+</div>
+
+
 
 <br>
 
