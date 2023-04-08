@@ -11,9 +11,22 @@ class DespesasController < ApplicationController
     @despesas_maior_valor = @despesas.order(valor: :desc).limit(1)
     @despesas_maior_valor2 = @despesas.maximum(:valor)
     
-    @pagy, @despesas = pagy(@despesas)
+   
     #binding.pry
-    
+
+    if params[:mes_select]
+      @mes = params[:mes_select]
+      ano = @mes.split("-")[0].to_i
+      mes = @mes.split("-")[1].to_i
+
+      @despesas = Despesa.where("DATE_PART('year', data) = ? AND DATE_PART('month', data) = ?", ano, mes).order(:data)
+      @despesas_total = @despesas.sum(:valor)
+      @despesas_total_qnt = @despesas.count
+      @despesas_maior_valor = @despesas.order(valor: :desc).limit(1)
+      @despesas_maior_valor2 = @despesas.maximum(:valor)
+    end
+
+     @pagy, @despesas = pagy(@despesas)
   end
 
   def mensal
