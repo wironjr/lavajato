@@ -42,7 +42,7 @@
       <tr>
         <td><%= despesa.data.strftime('%d/%m/%Y %H:%M') %></td>
         <td><%= despesa.observacao.upcase %></td>
-        <td><%= despesa.tipo %> <%= despesa.vale.blank? ? despesa.funcionario : despesa.vale %></td>
+        <td class="<%= despesa.tipo == "VALE" ? 'text-success' : despesa.tipo == "FUNCIONÁRIO" ? 'text-danger' : '' %>"><%= despesa.tipo %> <%= despesa.vale.blank? ? despesa.funcionario : despesa.vale %></td>
         <td><%= numero_real(despesa.valor,2) %></td>
         <td>
           <%= link_to '', edit_despesa_path(despesa), class:'btn btn-primary rounded-pill bi bi-pencil-square text-white fs-6'  %>
@@ -55,3 +55,10 @@
 
 <br>
 
+<div class="text-center mt-3 mb-5" style="font-size: 0.5rem">
+  <div class="d-flex justify-content-start gap-2">
+  LEGENDA
+    <div class="text-bg-success rounded-pill p-1" >DESPESA TIPO VALE</div>
+    <div class="text-bg-danger rounded-pill p-1">DESPESA TIPO FUNCIONÁRIO</div>
+  </div>
+</div>

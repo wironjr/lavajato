@@ -16,7 +16,7 @@
     <% @users.each do |user| %>
       <tr>
         <td><%= user.created_at.to_date.strftime('%d/%m/%Y') %></td>
-        <td><%= user.nome %></td>
+        <td><%= user.nome.upcase %></td>
         <td><%= user.tipo %></td>
         <td>
             <%#= link_to 'Show', servico %>
