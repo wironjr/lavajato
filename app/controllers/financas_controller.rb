@@ -101,8 +101,9 @@ class FinancasController < ApplicationController
       mes = @mes.split("-")[1].to_i
 
       @users = User.where.not(tipo: ["FUNCIONÁRIO", "FUNCIONÁRIO COM ACESSO"]).where("extract(year from created_at) < ? OR (extract(year from created_at) = ? AND extract(month from created_at) <= ?)", ano, ano, mes)
-      @users_func = User.where(tipo: ["FUNCIONÁRIO", "FUNCIONÁRIO COM ACESSO"]).where("extract(year from created_at) < ? OR (extract(year from created_at) = ? AND extract(month from created_at) <= ?)", ano, ano, mes)
-
+      @users_func = User.where(tipo: ["FUNCIONÁRIO", "FUNCIONÁRIO COM ACESSO"]).where("to_char(date_trunc('month', created_at), 'YYYY-MM') <= '#{params[:mes_select]}' AND to_char(date_trunc('month', desligamento), 'YYYY-MM') >= '#{params[:mes_select]}'")
+    
+      
       ##### qnt de usuarios #####
       @users_quantidade = @users.count
 

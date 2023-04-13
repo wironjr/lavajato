@@ -22,6 +22,14 @@
     <%= form.password_field :password_confirmation, class: "form-control"  %>
   </div>
 
+  <% if params[:desligamento] || params[:desligado] %>
+    <div class="form-group mb-2">
+      <%= form.label :desligamento %>
+      <span style="font-size: 0.65rem" class="<%= params[:desligamento].present? || params[:desligado].present? ? 'text-danger' : 'hide' %>"> (Modifique a data de desligamento se precisar)</span>
+      <%= form.date_field :desligamento, value: params[:desligamento].present? || params[:desligado].present? ? params[:desligamento] : '', class: "form-control text-uppercase" %>
+    </div>
+  <% end %>
+
   <div class="form-group mt-4">
     <%= form.submit "Salvar", class: "btn btn-primary me-2" %>
     <%= link_to "Voltar", users_path, class: "btn btn-primary active" %>
@@ -50,5 +58,18 @@ function generateRandomCode() {
       $(".div-senha").show() 
     }
   })
+  })
+
+  $("#user_tipo").ready(function(){
+    if($("#user_tipo").val() == "FUNCIONÁRIO"){
+      var code = generateRandomCode();
+      $("#user_password").val(code) 
+      $("#user_password_confirmation").val(code)
+      $(".div-senha").hide() 
+    }else{
+      $("#user_password").val("") 
+      $("#user_password_confirmation").val("")
+      $(".div-senha").show() 
+    }
   })
 </script>
