@@ -3,4 +3,6 @@ class Servico < ApplicationRecord
     validates :valor, presence: true
     validates :servico, presence: true
     validates :veiculo, presence: true
+
+    has_one_attached :imagem
 end

@@ -26,16 +26,16 @@
   </div>
 </div>
 
-
  
 <div class="table-responsive mt-4">
   <table class="table">
     <thead>
       <tr>
-        <th style="width: 15%">Data/Hora</th>
-        <th style="width: 20%">Cliente</th>
-        <th style="width: 20%">Serviço</th>
-        <th style="width: 15%">Veículo</th>
+        <th style="width: 5%"></th>
+        <th style="width: 10%">Data/Hora</th>
+        <th style="">Cliente</th>
+        <th style="">Serviço</th>
+        <th style="">Veículo</th>
         <th>Caixa</th>
         <th>Valor</th>
         <th>Pago?</th>
@@ -46,7 +46,11 @@
     <tbody>
       <% @servicos_do_dia.each do |servico| %>
         <tr>
-          <td><%= servico.data.strftime('%d/%m/%Y %H:%M') %></td>
+          <td> <%= image_tag servico.imagem, width:60 if servico.imagem.present? %></td>
+          <td>
+            <%= servico.data.strftime('%d/%m/%Y') %>
+            <div style="font-size:0.7rem"><%= servico.data.strftime('%H:%M') %></div>
+          </td>
           <td><%= servico.cliente.upcase %></td>
           <td><%= servico.servico.upcase %></td>
           <td><%= servico.veiculo.upcase %></td>
