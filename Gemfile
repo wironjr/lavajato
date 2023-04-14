@@ -34,6 +34,7 @@ gem 'bcrypt', '~> 3.1.7'
 
 gem 'pry', '~> 0.13.1'
 
+gem "image_processing", ">= 1.2"
 
 
 # Use Active Storage variant

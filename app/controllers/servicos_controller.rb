@@ -2,6 +2,7 @@ class ServicosController < ApplicationController
   before_action :require_logged_in_user
   before_action :set_servico, only: %i[ show edit update destroy ]
   include Pagy::Backend
+  require 'image_processing/mini_magick'
 
   # GET /servicos or /servicos.json
   def index
@@ -79,8 +80,19 @@ class ServicosController < ApplicationController
   def create
     @users = User.all.select("id","nome").order(:nome)
     params[:servico][:valor] = params[:servico][:valor].gsub('R$','').gsub(' ','').gsub('.','')
-
+    
     @servico = Servico.new(servico_params)
+    
+    image = MiniMagick::Image.open(params[:servico][:imagem])
+
+    processed_image = ImageProcessing::MiniMagick
+      .source(image)
+      .resize_to_limit(800, 800)
+      .strip
+      .quality(80)
+      .call
+
+    @servico.imagem.attach(io: processed_image, filename: 'optimized_image.jpg')
 
     if @servico.save
       flash[:success] = "Serviço criado com sucesso!" 
@@ -94,6 +106,7 @@ class ServicosController < ApplicationController
   # PATCH/PUT /servicos/1 or /servicos/1.json
   def update
     @users = User.all.select("id","nome").order(:nome)
+    
     params[:servico][:valor] = params[:servico][:valor].gsub('R$','').gsub(' ','').gsub('.','')
    
       if @servico.update(servico_params)
