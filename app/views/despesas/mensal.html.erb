@@ -16,11 +16,11 @@
       <h5 class="card-title fw-bold" style="text-shadow: 1px 1px #000"><%= pluralize(@despesas_total_qnt, 'despesa', 'despesas') %></h5>
     </div>
   </div>
-  <% if @despesas_maior_valor.first %>
-    <div class="card shadow text-center text-bg-secondary" style="width: 10rem" title="<%= @despesas_maior_valor.first.observacao.upcase %>">
+  <% if @despesas_maior_valor %>
+    <div class="card shadow text-center text-bg-secondary" style="width: 10rem" title="<%= @despesas_maior_valor.observacao.upcase %>">
       <h5 class="card-header" >Maior valor</h5>
       <div class="card-body ">
-        <h5 class="card-title fw-bold" style="text-shadow: 1px 1px #000" ><%= numero_real(@despesas_maior_valor.first.valor,2) %></h5>
+        <h5 class="card-title fw-bold" style="text-shadow: 1px 1px #000" ><%= numero_real(@despesas_maior_valor.valor,2) %></h5>
       </div>
     </div>
   <% end %>
@@ -61,11 +61,11 @@
   </thead>
 
   <tbody>
-    <% @despesas.each do |despesa| %>
+    <%  @despesas.each do |despesa| %>
       <tr>
         <td><%= despesa.data.strftime('%d/%m/%Y %H:%M') %></td>
         <td><%= despesa.observacao.upcase %></td>
-        <td><%= despesa.tipo %> <%= despesa.vale.blank? ? despesa.funcionario : despesa.vale %></td>
+        <td class="text-uppercase"><%= despesa.tipo %> <%= despesa.vale.blank? ? despesa.user&.nome : despesa.vale %></td>
         <td><%= numero_real(despesa.valor,2) %></td>
         <td>
           <%= link_to '', edit_despesa_path(despesa), class:'btn btn-primary rounded-pill bi bi-pencil-square text-white fs-6'  %>

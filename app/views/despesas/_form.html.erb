@@ -11,7 +11,7 @@
   </div>
   <div class="form-group mb-2">
     <%= form.label :tipo %>
-    <%= form.select :tipo, options_for_select([["PRODUTOS", "PRODUTOS"], ["GERAL", "GERAL"], ["FUNCIONÁRIO", "FUNCIONÁRIO"], ["VALE", "VALE"]], params[:tipo_params]), {include_blank: "Selecione"}, class: "form-control text-uppercase" %>
+    <%= form.select :tipo, options_for_select([["PRODUTOS", "PRODUTOS"], ["GERAL", "GERAL"], ["FUNCIONÁRIO", "FUNCIONÁRIO"], ["VALE", "VALE"]], @despesa.tipo), {include_blank: "Selecione"}, class: "form-control text-uppercase" %>
     <%# binding.pry %>
   </div>
 
@@ -22,7 +22,7 @@
 
   <div class="form-group mb-2  " id="div-func">
     <%= form.label :funcionario, 'Funcionário' %>
-    <%= form.select :funcionario, @users_func.map { |u| [u.nome.upcase] },{include_blank: "Selecione"}, class: "form-control text-uppercase" %>
+    <%= form.select :funcionario, @users_func.map { |u| [u.nome.upcase, u.id] },{include_blank: "Selecione"}, class: "form-control text-uppercase" %>
   </div>
   
   <div class="form-group mb-2">
@@ -33,10 +33,21 @@
     <%= form.submit "Salvar", class: "btn btn-primary me-2" %>
     <%= link_to "Voltar", despesas_path, class: "btn btn-primary active" %>
   </div>
+  
+  <%#= form.hidden_field :user_id, value: current_user.id %>
+  <%= form.hidden_field :user_id %>
+
 <% end %>
 
 
 <script>
+
+$("#despesa_funcionario").change(function(){
+  valor = $("#despesa_funcionario").val()
+  $("#despesa_user_id").val(valor)
+})
+
+
   $(document).ready(function(){
     $('.moeda').maskMoney({
       prefix: 'R$ ',

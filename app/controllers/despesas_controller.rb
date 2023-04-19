@@ -5,35 +5,43 @@ class DespesasController < ApplicationController
 
   # GET /despesas or /despesas.json
   def index
-    @despesas = Despesa.all.order(:data)
-    @despesas_total = @despesas.sum(:valor)
-    @despesas_total_qnt = @despesas.count
-    @despesas_maior_valor = @despesas.order(valor: :desc).limit(1)
+    @despesas = Despesa.where.not(tipo: "FUNCIONÁRIO").order(:data)
     @despesas_maior_valor2 = @despesas.maximum(:valor)
-    
+    @despesa_fixa_func = Despesa.where(tipo: "FUNCIONÁRIO")
+    @user = User.where(desligamento: "01-01-3000").where(tipo: "FUNCIONÁRIO")
    
-    #binding.pry
-
+    
+    
     if params[:mes_select]
+      user_ids = User.where(tipo: "FUNCIONÁRIO").where("to_char(date_trunc('month', created_at), 'YYYY-MM') <= '#{params[:mes_select]}' AND to_char(date_trunc('month', desligamento), 'YYYY-MM') >= '#{params[:mes_select]}'").pluck(:id)
       @mes = params[:mes_select]
       ano = @mes.split("-")[0].to_i
       mes = @mes.split("-")[1].to_i
-
-      @despesas = Despesa.where("DATE_PART('year', data) = ? AND DATE_PART('month', data) = ?", ano, mes).order(:data)
-      @despesas_total = @despesas.sum(:valor)
-      @despesas_total_qnt = @despesas.count
-      @despesas_maior_valor = @despesas.order(valor: :desc).limit(1)
+      
+      @despesas = Despesa.where.not(tipo: "FUNCIONÁRIO").where("DATE_PART('year', data) = ? AND DATE_PART('month', data) = ?", ano, mes).order(:data)
+      @despesa_fixa_func = Despesa.where(tipo: "FUNCIONÁRIO").where("to_char(date_trunc('month', data), 'YYYY-MM') <= '#{params[:mes_select]}'").where(funcionario: user_ids)
+      @despesa_mensal = @despesas + @despesa_fixa_func
+      @despesas_total = @despesa_mensal.map(&:valor).sum
+      @despesas_total_qnt = @despesa_mensal.count
+      #@despesas_maior_valor = @despesa_mensal.order(valor: :desc).limit(1)
       @despesas_maior_valor2 = @despesas.maximum(:valor)
+      #binding.pry
+    else
+      @despesa_mensal = @despesas + @despesa_fixa_func
+      @despesas_total_qnt = @despesa_mensal.count
+      @despesas_total = @despesa_mensal.map(&:valor).sum
+      @despesas_maior_valor = @despesa_mensal.max_by(&:valor)
     end
 
      @pagy, @despesas = pagy(@despesas)
   end
 
-  def mensal
+  def mensal    
     @despesas = Despesa.where(data: Time.now.beginning_of_month..Time.now.end_of_month).order(:data)
+   
     @despesas_total = @despesas.sum(:valor)
     @despesas_total_qnt = @despesas.count
-    @despesas_maior_valor = @despesas.order(valor: :desc).limit(1)
+    @despesas_maior_valor = @despesas.max_by(&:valor)
     @despesas_maior_valor2 = @despesas.maximum(:valor)
 
     @despesa_vale_qnt = @despesas.where(tipo: "VALE").count
@@ -74,22 +82,26 @@ class DespesasController < ApplicationController
   def new
     @despesa = Despesa.new
     @users = User.all
-    @users_func = User.where(tipo: ["FUNCIONÁRIO", "FUNCIONARIO COM ACESSO"])
+    @users_func = User.where(tipo: ["FUNCIONÁRIO", "FUNCIONARIO COM ACESSO"]).where(desligamento: "01-01-3000")
   end
 
   # GET /despesas/1/edit
   def edit
     @users = User.all
-    @users_func = User.where(tipo: ["FUNCIONÁRIO", "FUNCIONARIO COM ACESSO"])
+    @users_func = User.where(tipo: ["FUNCIONÁRIO", "FUNCIONARIO COM ACESSO"]).where(desligamento: "01-01-3000")
   end
 
   # POST /despesas or /despesas.json
   def create
     @users = User.all
-    @users_func = User.where(tipo: ["FUNCIONÁRIO", "FUNCIONARIO COM ACESSO"])
+    @users_func = User.where(tipo: ["FUNCIONÁRIO", "FUNCIONARIO COM ACESSO"]).where(desligamento: "01-01-3000")
     params[:despesa][:valor] = params[:despesa][:valor].gsub('R$','').gsub(' ','').gsub('.','')
     @despesa = Despesa.new(despesa_params)
-    
+
+    if Despesa.where(tipo: params[:despesa][:tipo]).where(funcionario: params[:despesa][:funcionario]).present?
+      flash[:danger] = "Despesa de funcionário já cadastrada, edite a existente!" 
+      redirect_to despesas_path
+    else
       if @despesa.save
         flash[:success] = "Despesa criada com sucesso!" 
         redirect_to despesas_path
@@ -97,6 +109,7 @@ class DespesasController < ApplicationController
         flash[:danger] = "Despesa não foi criada!"
         render 'new'
       end
+    end
 
   end
 
@@ -132,6 +145,6 @@ class DespesasController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def despesa_params
-      params.require(:despesa).permit(:observacao, :tipo, :valor, :data, :vale, :funcionario)
+      params.require(:despesa).permit(:observacao, :tipo, :valor, :data, :vale, :funcionario, :user_id)
     end
 end

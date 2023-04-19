@@ -46,7 +46,7 @@
     <tbody>
       <% @servicos_do_dia.each do |servico| %>
         <tr>
-          <td> <%= image_tag servico.imagem, width:60 if servico.imagem.present? %></td>
+          <td><div class="overflow-hidden" style="width:60px; height:60px"> <%= image_tag servico.imagem, width:60 if servico.imagem.present? %></div></td>
           <td>
             <%= servico.data.strftime('%d/%m/%Y') %>
             <div style="font-size:0.7rem"><%= servico.data.strftime('%H:%M') %></div>

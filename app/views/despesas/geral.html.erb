@@ -35,7 +35,7 @@
       <tr>
         <td><%= despesa.data.strftime('%d/%m/%Y %H:%M') %></td>
         <td><%= despesa.observacao.upcase %></td>
-        <td><%= despesa.tipo %> <%= despesa.vale.blank? ? despesa.funcionario : despesa.vale %></td>
+        <td class="text-uppercase"><%= despesa.tipo %> <%= despesa.vale.blank? ? despesa.user&.nome : despesa.vale %></td>
         <td><%= numero_real(despesa.valor,2) %></td>
         <td>
           <%= link_to '', edit_despesa_path(despesa), class:'btn btn-primary rounded-pill bi bi-pencil-square text-white fs-6'  %>
