@@ -14,6 +14,8 @@ Rails.application.routes.draw do
   resources :servicos do
     get :todos, on: :collection
     get :mensal, on: :collection
+    delete 'servicos/:id/apagar_foto', to: 'servicos#apagar_foto', as: :apagar_foto_servico
+
   end
 
   resources :financas do

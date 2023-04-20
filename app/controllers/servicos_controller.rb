@@ -1,6 +1,6 @@
 class ServicosController < ApplicationController
   before_action :require_logged_in_user
-  before_action :set_servico, only: %i[ show edit update destroy ]
+  before_action :set_servico, only: %i[ show edit update destroy apagar_foto ]
   include Pagy::Backend
   require 'image_processing/mini_magick'
 
@@ -125,6 +125,11 @@ class ServicosController < ApplicationController
     flash[:success] = "Serviço apagado com sucesso!" 
     redirect_to servicos_path
     
+  end
+
+  def apagar_foto
+    @servico.imagem.purge
+    redirect_back(fallback_location: root_path)
   end
 
   private
