@@ -55,6 +55,7 @@
 					<h6 class="card-title fw-bold" style="text-shadow: 1px 1px #000;"><span class="badge rounded-pill">SALÁRIO</span> <%= numero_real(instance_variable_get("@salario_func_#{user_func.nome}"),2) %></h6>
 					<h6 class="card-title fw-bold" style="text-shadow: 1px 1px #000"><span class="badge rounded-pill">RECEBIDO</span> <%= numero_real(instance_variable_get("@recebido_caixa_func_#{user_func.nome}"),2) %></h6>
 					<h6 class="card-title fw-bold" style="text-shadow: 1px 1px #000"><span class="badge rounded-pill">FALTA</span> <%= numero_real(instance_variable_get("@falta_receber_func_#{user_func.nome}"),2) %></h6>
+          <%# binding.pry %>
 				</div>
 			</div>
 		<% end %>

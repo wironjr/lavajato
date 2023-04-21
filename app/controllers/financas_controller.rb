@@ -60,7 +60,7 @@ class FinancasController < ApplicationController
   def individual
     @users = User.where.not(tipo: ["FUNCIONÁRIO", "FUNCIONÁRIO COM ACESSO"])
     mes = Time.now.month
-    @users_func = User.where(tipo: ["FUNCIONÁRIO", "FUNCIONÁRIO COM ACESSO"]).where("extract(month from created_at) <= ?", mes)
+    @users_func = User.where(tipo: ["FUNCIONÁRIO", "FUNCIONÁRIO COM ACESSO"]).where("to_char(date_trunc('month', created_at), 'YYYY-MM') <= '#{Time.now.strftime('%Y-%m')}' AND to_char(date_trunc('month', desligamento), 'YYYY-MM') >= '#{Time.now.strftime('%Y-%m')}'")
     @despesas = Despesa.all
     @servicos = Servico.all
 
@@ -87,12 +87,14 @@ class FinancasController < ApplicationController
     
     @users_func.each do |user_func|
       recebido_caixa_func = Servico.where(data: Time.now.beginning_of_month..Time.now.end_of_month).where(caixa: user_func.nome.upcase).sum(:valor) + @despesas.where(data: Time.now.beginning_of_month..Time.now.end_of_month).where(tipo: "VALE").where(vale: user_func.nome.upcase).sum(:valor)
-      salario_func = @despesas.where(data: Time.now.beginning_of_month..Time.now.end_of_month).where(tipo: "FUNCIONÁRIO").where(funcionario: user_func.nome.upcase).sum(:valor)
+      salario_func = @despesas.where(tipo: "FUNCIONÁRIO").where(funcionario: user_func.id).sum(:valor)
       falta_receber_func = salario_func - recebido_caixa_func
-
+      
+      
       instance_variable_set("@recebido_caixa_func_#{user_func.nome}", recebido_caixa_func)
       instance_variable_set("@salario_func_#{user_func.nome}", salario_func)
       instance_variable_set("@falta_receber_func_#{user_func.nome}", falta_receber_func)
+      #binding.pry
     end
     
     if params[:mes_select]
@@ -108,8 +110,10 @@ class FinancasController < ApplicationController
       @users_quantidade = @users.count
 
       ##### lucro ######
+      user_ids = User.where(tipo: "FUNCIONÁRIO").where("to_char(date_trunc('month', created_at), 'YYYY-MM') <= '#{params[:mes_select]}' AND to_char(date_trunc('month', desligamento), 'YYYY-MM') >= '#{params[:mes_select]}'").pluck(:id)
+      @despeses_func = @despesas.where(tipo: "FUNCIONÁRIO").where(funcionario: user_ids).sum(:valor)
       @servicos_total = @servicos.where("DATE_PART('year', data) = ? AND DATE_PART('month', data) = ?", ano, mes).where(pago: :true).map(&:valor).sum
-      @despeses_mes = @despesas.where("DATE_PART('year', data) = ? AND DATE_PART('month', data) = ?", ano, mes).where.not(tipo: "VALE").sum(:valor)
+      @despeses_mes = @despesas.where("DATE_PART('year', data) = ? AND DATE_PART('month', data) = ?", ano, mes).where.not(tipo: "VALE").sum(:valor) + @despeses_func
       @servicos_lucro = @servicos_total - @despeses_mes
       if @users_quantidade > 0
         @servicos_lucro_individual =  @servicos_lucro / @users_quantidade
@@ -131,7 +135,7 @@ class FinancasController < ApplicationController
       
       @users_func.each do |user_func|
         recebido_caixa_func = Servico.where("DATE_PART('month', data) = ?", mes).where(caixa: user_func.nome.upcase).sum(:valor) + @despesas.where("DATE_PART('month', data) = ?", mes).where(tipo: "VALE").where(vale: user_func.nome.upcase).sum(:valor)
-        salario_func = @despesas.where("DATE_PART('month', data) = ?", mes).where(tipo: "FUNCIONÁRIO").where(funcionario: user_func.nome.upcase).sum(:valor)
+        salario_func = @despesas.where(tipo: "FUNCIONÁRIO").where(funcionario: user_func.id).sum(:valor)
         falta_receber_func = salario_func - recebido_caixa_func
   
         instance_variable_set("@recebido_caixa_func_#{user_func.nome}", recebido_caixa_func)

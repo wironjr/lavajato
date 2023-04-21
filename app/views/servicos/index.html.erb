@@ -46,7 +46,13 @@
     <tbody>
       <% @servicos_do_dia.each do |servico| %>
         <tr>
-          <td><div class="overflow-hidden" style="width:60px; height:60px"> <%= image_tag servico.imagem, width:60 if servico.imagem.present? %></div></td>
+          <td>
+            <div class="overflow-hidden" style="width:60px; height:60px"> 
+                <%#= image_tag servico.imagem, width:60 if servico.imagem.present? %>
+                <%= link_to image_tag(servico.imagem, width:60),servico, style: "text-decoration: none;", class:"text-white",
+                data:{ bs_toggle: "modal", bs_target: "#servicoModal#{servico.id}", remote: true } if servico.imagem.present? %>
+            </div>
+          </td>
           <td>
             <%= servico.data.strftime('%d/%m/%Y') %>
             <div style="font-size:0.7rem"><%= servico.data.strftime('%H:%M') %></div>
@@ -59,9 +65,9 @@
           <td class="moeda"><%= numero_real(servico.valor, 2) %></td>
           <td>
             <% if servico.pago %>
-              <span class="badge rounded-pill bg-success">sim</span>
+              <span class="badge rounded-pill bg-success">SIM</span>
             <% else %>
-              <span class="badge rounded-pill bg-danger">não</span>
+              <span class="badge rounded-pill bg-danger">NÃO</span>
             <% end %>
           </td>
           <td>
@@ -70,6 +76,34 @@
             <%= link_to '', servico, method: :delete, class: 'btn btn-danger rounded-pill bi bi-trash3-fill', data: { confirm: 'Are you sure?' } %>
           </td>
         </tr>
+
+        <div class="modal fade" id="servicoModal<%= servico.id %>" tabindex="-1" aria-labelledby="servicoLabel<%= servico.id %>" aria-hidden="true">
+        <div class="modal-dialog ">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="servicoLabel<%= servico.id %>">Detalhes do serviço</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+              <div class="modal-body text-center">
+                <%= image_tag servico.imagem, width:'80%' %>
+                <div class="mt-2"><span style="font-size: 0.8rem"><b>Cliente:</b> </span><%= servico.cliente.upcase %></div>
+                <div><span style="font-size: 0.8rem"><b>Serviço:</b> </span><%= servico.servico.upcase %></div>
+                <div><span style="font-size: 0.8rem"><b>Veículo:</b> </span><%= servico.veiculo.upcase %></div>
+                <div><span style="font-size: 0.8rem"><b>Caixa:</b> </span><%= servico.caixa.upcase %></div>
+                <div><span style="font-size: 0.8rem"><b>Valor:</b> </span><%= numero_real(servico.valor, 2) %></div>
+                <div class="mt-2">
+                  <% if servico.pago %>
+                    <span class="badge rounded-pill bg-success">SERVIÇO PAGO</span>
+                  <% else %>
+                    <span class="badge rounded-pill bg-danger">PAGAMENTO PENDENTE</span>
+                  <% end %>
+                </div>
+              </div>
+              
+            </div>
+          </div>
+        </div>
+
       <% end %>
     </tbody>
   </table>
