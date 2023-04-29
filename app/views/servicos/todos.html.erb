@@ -21,13 +21,16 @@
   </div>
 </div>
 
-<form>
-  <div class="row mt-4">
+<%= form_tag todos_servicos_path, method: :get do %>
+<div class="row mt-4">
     <div class="col-sm-2 mb-2">
       <input type="date" class="form-control" name="data_search" value="<%= params[:data_search].present? ? params[:data_search] : '' %>">
     </div>
     <div class="col-sm-2 mb-2">
       <input type="text" class="form-control" name="cliente_busca" placeholder="Nome do cliente">
+    </div>
+    <div class="col-sm-2 mb-2">
+      <%= select_tag :caixa_busca, options_for_select([["SELECIONE CAIXA", "SELECIONE CAIXA"], ["NORMAL", "NORMAL"]] + @users.map { |u| [u.nome.upcase] }, selected: "SELECIONE CAIXA"), class: "form-control" %>
     </div>
     <div class="col-sm-1 mb-2">
       <button type="submit" class="btn btn-primary">Pesquisar</button>
@@ -36,7 +39,7 @@
     <a href="/servicos/todos/" class="btn btn-primary">Limpar Filtro</a>
     </div>
   </div>
-</form>
+<% end %>
 
 
 <div class="table-responsive mt-4">

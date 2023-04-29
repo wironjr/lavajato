@@ -38,7 +38,7 @@ class DespesasController < ApplicationController
 
   def mensal    
     @despesas = Despesa.where(data: Time.now.beginning_of_month..Time.now.end_of_month).order(:data)
-   
+    
     @despesas_total = @despesas.sum(:valor)
     @despesas_total_qnt = @despesas.count
     @despesas_maior_valor = @despesas.max_by(&:valor)
@@ -97,8 +97,8 @@ class DespesasController < ApplicationController
     @users_func = User.where(tipo: ["FUNCIONÁRIO", "FUNCIONARIO COM ACESSO"]).where(desligamento: "01-01-3000")
     params[:despesa][:valor] = params[:despesa][:valor].gsub('R$','').gsub(' ','').gsub('.','')
     @despesa = Despesa.new(despesa_params)
-
-    if Despesa.where(tipo: params[:despesa][:tipo]).where(funcionario: params[:despesa][:funcionario]).present?
+#binding.pry
+    if Despesa.where(tipo: "FUNCIONÁRIO").where(tipo: params[:despesa][:tipo]).where(funcionario: params[:despesa][:funcionario]).present?
       flash[:danger] = "Despesa de funcionário já cadastrada, edite a existente!" 
       redirect_to despesas_path
     else

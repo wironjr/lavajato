@@ -11,7 +11,8 @@
   </div>
   <div class="form-group mb-2">
     <%= form.label :tipo %>
-    <%= form.select :tipo, options_for_select([["PRODUTOS", "PRODUTOS"], ["GERAL", "GERAL"], ["FUNCIONÁRIO", "FUNCIONÁRIO"], ["VALE", "VALE"]], @despesa.tipo), {include_blank: "Selecione"}, class: "form-control text-uppercase" %>
+    <%= form.select :tipo, options_for_select([["PRODUTOS", "PRODUTOS"], ["GERAL", "GERAL"], ["FUNCIONÁRIO", "FUNCIONÁRIO"], ["VALE", "VALE"]], @despesa.tipo), {include_blank: "Selecione"}, class: "form-control text-uppercase" if params[:action] == 'edit' %>
+    <%= form.select :tipo, options_for_select([["PRODUTOS", "PRODUTOS"], ["GERAL", "GERAL"], ["FUNCIONÁRIO", "FUNCIONÁRIO"], ["VALE", "VALE"]], params[:tipo_params]), {include_blank: "Selecione"}, class: "form-control text-uppercase" if params[:action] == 'new' %>
     <%# binding.pry %>
   </div>
 
@@ -42,9 +43,37 @@
 
 <script>
 
-$("#despesa_funcionario").change(function(){
-  valor = $("#despesa_funcionario").val()
-  $("#despesa_user_id").val(valor)
+
+$("#despesa_tipo").ready(function(){
+  if($("#despesa_tipo").val() == 'VALE'){
+    $('#despesa_observacao').val('VALE')
+  }else{
+    $('#despesa_observacao').val('')
+  }
+  if($("#despesa_tipo").val() == 'FUNCIONÁRIO'){
+    $("#despesa_funcionario").change(function(){
+      valor = $("#despesa_funcionario").val()
+      $("#despesa_user_id").val(valor)})
+  }else{
+    //$("#despesa_user_id").val("")
+    $("#despesa_user_id").val("<%= current_user.id %>")
+  }
+})
+
+$("#despesa_tipo").change(function(){
+  if($("#despesa_tipo").val() == 'VALE'){
+    $('#despesa_observacao').val('VALE')
+  }else{
+    $('#despesa_observacao').val('')
+  }
+  if($("#despesa_tipo").val() == 'FUNCIONÁRIO'){
+    $("#despesa_funcionario").change(function(){
+      valor = $("#despesa_funcionario").val()
+      $("#despesa_user_id").val(valor)})
+  }else{
+    //$("#despesa_user_id").val("")
+    $("#despesa_user_id").val("<%= current_user.id %>")
+  }
 })
 
 

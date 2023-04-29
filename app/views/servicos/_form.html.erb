@@ -45,7 +45,7 @@
         <%= image_tag @servico.imagem, id:'teste_img', width:300 %>
       <% end %>
       <div>
-        <%= link_to " Apagar foto", servico_apagar_foto_servico_path(@servico), method: :delete, id: "apagar-foto-link", class:"mt-2 bi bi-trash3 btn btn-danger" if params[:action] == 'edit' %>
+        <%= link_to " Apagar foto", servico_apagar_foto_servico_path(@servico), method: :delete, id: "apagar-foto-link", class:"mt-2 bi bi-trash3 btn btn-danger" if @servico.imagem.present? %>
       </div>
     </div>
   </div>

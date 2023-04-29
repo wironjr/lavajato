@@ -34,6 +34,9 @@
     <div class="col-sm-2 mb-2">
       <input type="text" class="form-control" name="cliente_busca" placeholder="Nome do cliente">
     </div>
+    <div class="col-sm-2 mb-2">
+      <%= select_tag :caixa_busca, options_for_select([["SELECIONE CAIXA", "SELECIONE CAIXA"], ["NORMAL", "NORMAL"]] + @users.map { |u| [u.nome.upcase] }, selected: "SELECIONE CAIXA"), class: "form-control" %>
+    </div>
     <div class="col-sm-1 mb-2">
       <button type="submit" class="btn btn-primary">Pesquisar</button>
     </div>
@@ -106,6 +109,8 @@ now = new Date
 
 urlParams = new URLSearchParams(location.search);
 
+
+
 selectedMonthIndex = parseInt(urlParams.get('mes_select')) - 1;
 $('#mes-atual').text(
   selectedMonthIndex >= 0 && selectedMonthIndex <= 11
@@ -117,5 +122,13 @@ var x = 1
 monName.forEach(function(item){
     $('#select-mes').append('<option value="'+ x++ +'">' + item.toUpperCase() + '</option>');
 });
+
+$(document).ready(function(){
+  if ( location.search == '' ){
+    $('#select-mes').val(now.getMonth() + 1)
+  }else{
+    $('#select-mes').val(parseInt(urlParams.get('mes_select')))  
+  }
+})
 
 </script>

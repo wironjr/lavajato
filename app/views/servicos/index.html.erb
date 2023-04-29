@@ -85,7 +85,7 @@
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
               <div class="modal-body text-center">
-                <%= image_tag servico.imagem, width:'80%' %>
+                <%= image_tag servico.imagem, width:'80%' if servico.imagem.present? %>
                 <div class="mt-2"><span style="font-size: 0.8rem"><b>Cliente:</b> </span><%= servico.cliente.upcase %></div>
                 <div><span style="font-size: 0.8rem"><b>Serviço:</b> </span><%= servico.servico.upcase %></div>
                 <div><span style="font-size: 0.8rem"><b>Veículo:</b> </span><%= servico.veiculo.upcase %></div>

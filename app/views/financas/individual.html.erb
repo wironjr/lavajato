@@ -74,7 +74,12 @@
       
 				<div class="card-body">
 					<h6 class="card-title fw-bold" style="text-shadow: 1px 1px #000"><span class="badge rounded-pill">RECEBIDO</span> <%= numero_real(instance_variable_get("@recebido_#{user.nome}"),2) %></h6>
-					<h6 class="card-title fw-bold" style="text-shadow: 1px 1px #000"><span class="badge rounded-pill "><%= instance_variable_get("@recebido_#{user.nome}") > @servicos_lucro_individual ? 'DEVOLVER' : 'FALTA RECEBER'%></span> <%= instance_variable_get("@recebido_#{user.nome}") > @servicos_lucro_individual ? numero_real(instance_variable_get("@falta_receber_#{user.nome}").abs,2) : numero_real(instance_variable_get("@falta_receber_#{user.nome}"),2)%></h6>
+					<h6 class="card-title fw-bold" style="text-shadow: 1px 1px #000">
+            <span class="badge rounded-pill ">
+              <%= instance_variable_get("@recebido_#{user.nome}") > @servicos_lucro_individual ? 'DEVOLVER CAIXA' : 'FALTA RECEBER'%>
+            </span> 
+            <%= instance_variable_get("@recebido_#{user.nome}") > @servicos_lucro_individual ? numero_real(instance_variable_get("@falta_receber_#{user.nome}").abs,2) : numero_real(instance_variable_get("@falta_receber_#{user.nome}"),2)%>
+          </h6>
 				</div>
 			</div>
 

@@ -69,7 +69,7 @@ class FinancasController < ApplicationController
 
     ##### lucro ######
     @servicos_total = @servicos.where(data: Time.now.beginning_of_month..Time.now.end_of_month).where(pago: :true).map(&:valor).sum
-    @despeses_mes = @despesas.where(data: Time.now.beginning_of_month..Time.now.end_of_month).where.not(tipo: "VALE").sum(:valor)
+    @despeses_mes = @despesas.where(data: Time.now.beginning_of_month..Time.now.end_of_month).sum(:valor)
     @servicos_lucro = @servicos_total - @despeses_mes
     @servicos_lucro_individual =  @servicos_lucro / @users_quantidade
 

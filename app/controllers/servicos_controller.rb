@@ -21,8 +21,9 @@ class ServicosController < ApplicationController
     @servicos_total = @servicos.map(&:valor).sum
     @servicos_quantidade = @servicos.count
     @servicos_pago_pendedente = @servicos.where(pago: :false).count
+    @users = User.all.order(:tipo)
 
-    if params[:data_search] || params[:cliente_busca]
+    if params[:data_search] || params[:cliente_busca] || params[:caixa_busca]
       @servicos = @servicos.where('cliente ILIKE ?', "%#{params[:cliente_busca]}%") if params[:cliente_busca].present?
       @servicos_pago_pendedente = @servicos.where(pago: :false).count
       if params[:data_search].present?
@@ -31,6 +32,9 @@ class ServicosController < ApplicationController
         @servicos_total = @servicos.map(&:valor).sum
         @servicos_quantidade = @servicos.count
         @servicos_pago_pendedente = @servicos.where(pago: :false).count
+      end
+      if params[:caixa_busca] != "SELECIONE CAIXA"
+        @servicos = @servicos.where(caixa: params[:caixa_busca])
       end
     end
 
@@ -42,12 +46,16 @@ class ServicosController < ApplicationController
     @servicos = @servicos_all.where(data: Time.now.beginning_of_month..Time.now.end_of_month)
     @servicos_total = @servicos_all.where(data: Time.now.beginning_of_month..Time.now.end_of_month).where(pago: :true).map(&:valor).sum
     @servicos_pago_pendedente = @servicos.where(pago: :false).count
-
+    @users = User.all.order(:tipo)
     
-    if params[:mes_select] || params[:cliente_busca]
+    if params[:mes_select] || params[:cliente_busca] || params[:caixa_busca]
       @mes = params[:mes_select] || Time.now.month
       @servicos = @servicos_all.where("DATE_PART('month', data) = ?", @mes) if params[:mes_select].present?
       @servicos = @servicos_all.where('cliente ILIKE ?', "%#{params[:cliente_busca]}%") if params[:cliente_busca].present?
+      if params[:caixa_busca] != "SELECIONE CAIXA"
+        @servicos = @servicos.where(caixa: params[:caixa_busca])
+      end
+      
       @servicos_pago_pendedente = @servicos.where(pago: :false).count
 
       @servicos_total = @servicos_all.where("DATE_PART('month', data) = ?", @mes).where(pago: :true).map(&:valor).sum
@@ -83,16 +91,18 @@ class ServicosController < ApplicationController
     
     @servico = Servico.new(servico_params)
     
-    image = MiniMagick::Image.open(params[:servico][:imagem])
+    
+    if @servico.imagem.present?
+      image = MiniMagick::Image.open(params[:servico][:imagem])
+      processed_image = ImageProcessing::MiniMagick
+        .source(image)
+        .resize_to_limit(800, 800)
+        .strip
+        .quality(80)
+        .call
 
-    processed_image = ImageProcessing::MiniMagick
-      .source(image)
-      .resize_to_limit(800, 800)
-      .strip
-      .quality(80)
-      .call
-
-    @servico.imagem.attach(io: processed_image, filename: 'cleanner_image.jpg')
+      @servico.imagem.attach(io: processed_image, filename: 'cleanner_image.jpg')
+    end
 
     if @servico.save
       flash[:success] = "Serviço criado com sucesso!" 
