@@ -9,8 +9,6 @@ class DespesasController < ApplicationController
     @despesas_maior_valor2 = @despesas.maximum(:valor)
     @despesa_fixa_func = Despesa.where(tipo: "FUNCIONÁRIO")
     @user = User.where(desligamento: "01-01-3000").where(tipo: "FUNCIONÁRIO")
-   
-    
     
     if params[:mes_select]
       user_ids = User.where(tipo: "FUNCIONÁRIO").where("to_char(date_trunc('month', created_at), 'YYYY-MM') <= '#{params[:mes_select]}' AND to_char(date_trunc('month', desligamento), 'YYYY-MM') >= '#{params[:mes_select]}'").pluck(:id)
@@ -61,6 +59,14 @@ class DespesasController < ApplicationController
     @despesas = Despesa.where(tipo: "VALE").order(:data)
     @despesas_total = @despesas.sum(:valor)
     @despesas_total_qnt = @despesas.count
+
+    if params[:mes_select]
+      @mes = params[:mes_select]
+      ano = @mes.split("-")[0].to_i
+      mes = @mes.split("-")[1].to_i
+      @despesas = @despesas.where("DATE_PART('year', data) = ? AND DATE_PART('month', data) = ?", ano, mes)
+    end
+
     @pagy, @despesas = pagy(@despesas)
   end
   
@@ -68,6 +74,14 @@ class DespesasController < ApplicationController
     @despesas = Despesa.where(tipo: "PRODUTOS").order(:data)
     @despesas_total = @despesas.sum(:valor)
     @despesas_total_qnt = @despesas.count
+
+    if params[:mes_select]
+      @mes = params[:mes_select]
+      ano = @mes.split("-")[0].to_i
+      mes = @mes.split("-")[1].to_i
+      @despesas = @despesas.where("DATE_PART('year', data) = ? AND DATE_PART('month', data) = ?", ano, mes)
+    end
+
     @pagy, @despesas = pagy(@despesas)
   end
 

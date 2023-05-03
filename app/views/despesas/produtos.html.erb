@@ -2,6 +2,22 @@
 
 <h1 class="mt-2">Despesas em produtos</h1>
 
+<form>
+  <div class="row mt-4">
+    <div class="col-sm-2 mb-2">
+      <input type="month" class="form-control input-despesa-busca" name="mes_select" placeholder="Selecione..."
+       value="<%= params[:mes_select].present? ? params[:mes_select] : "" %>">
+    </div>
+    <div class="col-sm-1 mb-2">
+      <button type="submit" class="btn btn-primary">Pesquisar</button>
+    </div>
+    <div class="col-sm-2 mb-2">
+    <a href="/despesas/produtos" class="btn btn-primary">Limpar Filtro</a>
+    </div>
+  </div>
+</form>
+
+
 <div class=" d-flex justify-content-center mt-3 gap-4 mb-4" >
   <div class="card shadow text-center text-bg-primary" style="width: 10rem">
     <h5 class="card-header">Valor</h5>
@@ -16,6 +32,7 @@
     </div>
   </div>
 </div>
+
 
 <table class="table">
   <thead>

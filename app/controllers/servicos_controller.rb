@@ -90,8 +90,7 @@ class ServicosController < ApplicationController
     params[:servico][:valor] = params[:servico][:valor].gsub('R$','').gsub(' ','').gsub('.','')
     
     @servico = Servico.new(servico_params)
-    
-    
+
     if @servico.imagem.present?
       image = MiniMagick::Image.open(params[:servico][:imagem])
       processed_image = ImageProcessing::MiniMagick
