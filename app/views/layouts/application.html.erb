@@ -28,9 +28,11 @@
   </head>
 
   <body class="<%= params[:controller] == 'sessions' && params[:action] == 'new' ? 'bg-login' : '' %>">
+    
     <%= render 'layouts/header' %>
     
     <div class="container">
+
     <div class="flash-msg hide">
       <% flash.each do |message_type, message| %>
         <div class="alert2 alert alert-<%=message_type%> alert-dismissible fade show text-center w-50 m-auto fixed-top mt-3 shadow" id="alert-app" role="alert">
@@ -39,7 +41,6 @@
         </div>
       <% end %>
     </div>
-
 
     <%= yield %>
 

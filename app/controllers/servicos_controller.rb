@@ -77,17 +77,20 @@ class ServicosController < ApplicationController
   def new
     @servico = Servico.new
     @users = User.all.select("id","nome").order(:nome)
+    @tipos_servico = TiposServico.all
   end
 
   # GET /servicos/1/edit
   def edit
     @users = User.all.select("id","nome").order(:nome)
+    @tipos_servico = TiposServico.all
   end
 
   # POST /servicos or /servicos.json
   def create
     @users = User.all.select("id","nome").order(:nome)
     params[:servico][:valor] = params[:servico][:valor].gsub('R$','').gsub(' ','').gsub('.','')
+    @tipos_servico = TiposServico.all
     
     @servico = Servico.new(servico_params)
 
@@ -115,6 +118,7 @@ class ServicosController < ApplicationController
   # PATCH/PUT /servicos/1 or /servicos/1.json
   def update
     @users = User.all.select("id","nome").order(:nome)
+    @tipos_servico = TiposServico.all
     
     params[:servico][:valor] = params[:servico][:valor].gsub('R$','').gsub(' ','').gsub('.','')
    

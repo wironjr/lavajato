@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :tipos_servicos
   root to: "static_pages#index"
   
   resources :users

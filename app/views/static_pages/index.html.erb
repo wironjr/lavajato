@@ -5,6 +5,7 @@
     <%= link_to ' Produtos', produtos_despesas_path, class:'btn btn-primary bi bi-box-seam shadow btn-tremer', style:'width: 10rem; height: 6rem; font-size: 1.65rem' %>
     <%= link_to ' Despesas', despesas_path, class:'btn btn-primary bi bi-dash-circle shadow btn-tremer', style:'width: 10rem; height: 6rem; font-size: 1.6rem' %>
     <%= link_to ' Usuários', new_user_path, class:'btn btn-primary bi bi-person-add shadow btn-tremer', style:'width: 10rem; height: 6rem; font-size: 1.7rem' %>
+    <%= link_to ' T.Serviços', new_tipos_servico_path, class:'btn btn-primary bi bi-database-add shadow btn-tremer', style:'width: 10rem; height: 6rem; font-size: 1.7rem' %>
   </div>  
 </div>
 <div class="mt-5 text-center mb-3">
@@ -26,6 +27,15 @@
       <h5 class="card-header">Valor lucro</h5>
       <div class="card-body">
         <h5 class="card-title fw-bold" style="text-shadow: 1px 1px #000"><%= numero_real(@servicos_lucro,2) %></h5>
+      </div>
+    </div>
+    <div class="card shadow text-center text-bg-danger" style="width: 12rem"
+      data-bs-toggle="tooltip" data-bs-placement="bottom"
+        data-bs-custom-class="custom-tooltip"
+        data-bs-title="Valor despesas no mês.">
+      <h5 class="card-header">Despesas</h5>
+      <div class="card-body">
+        <h5 class="card-title fw-bold" style="text-shadow: 1px 1px #000"><%= numero_real(@despesas_mes,2) %></h5>
       </div>
     </div>
     <div class="card shadow text-center text-bg-secondary" style="width: 12rem"

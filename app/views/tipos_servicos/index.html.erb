@@ -1,0 +1,47 @@
+<div><%= link_to '', new_tipos_servico_path, class: 'bi-plus-circle-fill fs-1 float-end ' %></div>
+<h1>Tipos Servicos</h1>
+
+<form>
+  <div class="row mt-4">
+   
+    <div class="col-sm-2 mb-2">
+      <input type="text" class="form-control input-despesa-busca text-uppercase" name="tipo_select" placeholder="Digite o tipo..."
+       value="<%= params[:tipo_select].present? ? params[:tipo_select] : "" %>">
+    </div>
+    <div class="col-sm-1 mb-2">
+      <button type="submit" class="btn btn-primary">Pesquisar</button>
+    </div>
+    <div class="col-sm-2 mb-2">
+    <a href="/tipos_servicos" class="btn btn-primary">Limpar Filtro</a>
+    </div>
+  </div>
+</form>
+
+
+<table class="table mt-4">
+  <thead>
+    <tr>
+      <th style="width: 90%">Tipo</th>
+      <th colspan="3">Ações</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @tipos_servicos.each do |tipos_servico| %>
+      <tr>
+        <td><%= tipos_servico.tipo.upcase %></td>
+        <td>
+          <%= link_to '', edit_tipos_servico_path(tipos_servico), class:'btn btn-primary rounded-pill bi bi-pencil-square text-white fs-6' %>
+          <%= link_to '', tipos_servico, method: :delete, class: 'btn btn-danger rounded-pill bi bi-trash3-fill', data: { confirm: 'Apagar tipo de serviço?' } %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<div class="div-pagy mt-5">
+  <%== pagy_bootstrap_nav(@pagy) %>
+</div>
+
+<br>
+

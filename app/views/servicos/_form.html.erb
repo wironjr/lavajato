@@ -16,7 +16,7 @@
   </div>
   <div class="form-group mb-2">
     <%= form.label :servico, 'Serviço' %>
-    <%= form.text_field :servico, class: "form-control text-uppercase" %>
+    <%= form.select :servico, @tipos_servico.map { |t| [t.tipo.upcase] },{}, class: "form-control text-uppercase" %>
   </div>
   <div class="form-group mb-2">
     <%= form.label :valor %>
