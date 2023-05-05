@@ -36,6 +36,7 @@ gem 'pry', '~> 0.13.1'
 
 gem "image_processing", ">= 1.2"
 
+gem 'extenso_pt'
 
 # Use Active Storage variant
 # gem 'image_processing', '~> 1.2'

@@ -5,10 +5,12 @@ class StaticPagesController < ApplicationController
     @servicos = Servico.all
     @despesas = Despesa.all
     @servicos_total = @servicos.where(data: Time.now.beginning_of_month..Time.now.end_of_month).where(pago: :true).map(&:valor).sum
+    @servicos_total_modal = @servicos.where(data: Time.now.beginning_of_month..Time.now.end_of_month).where(pago: :true)
     @servicos_lucro = @servicos_total - @despesas.where(data: Time.now.beginning_of_month..Time.now.end_of_month).sum(:valor)
     @servicos_quantidade_mes = @servicos.where(data: Time.now.beginning_of_month..Time.now.end_of_month).count
     @servicos_pago_pendedente = @servicos.where(data: Time.now.beginning_of_month..Time.now.end_of_month).where(pago: :false).count
     @despesas_mes = @despesas.where(data: Time.now.beginning_of_month..Time.now.end_of_month).sum(:valor)
+    @despesas_mes_modal = @despesas.where(data: Time.now.beginning_of_month..Time.now.end_of_month)
     
     start_date = 3.months.ago.beginning_of_month
     end_date = Time.now.end_of_month

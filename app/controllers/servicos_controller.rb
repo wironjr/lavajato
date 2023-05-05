@@ -69,6 +69,10 @@ class ServicosController < ApplicationController
     @pagy, @servicos = pagy(@servicos)
   end
 
+  def recibo
+    @servico = Servico.find(params[:servico_id])
+  end
+
   # GET /servicos/1 or /servicos/1.json
   def show
   end

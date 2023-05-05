@@ -39,6 +39,7 @@
         <th>Caixa</th>
         <th>Valor</th>
         <th>Pago?</th>
+        <th>Recibo</th>
         <th >Ações</th>
       </tr>
     </thead>
@@ -71,6 +72,10 @@
             <% end %>
           </td>
           <td>
+            <%= link_to 'GERAR', servico_recibo_path(servico), class:'badge rounded-pill bg-secondary link-limpo' if servico.pago %>
+            <%= link_to 'GERAR', '', class:'badge rounded-pill bg-danger link-limpo pe-none' unless servico.pago %>
+          </td>
+          <td>
             <%#= link_to 'Show', servico %>
             <%= link_to '', edit_servico_path(servico), class:'btn btn-primary rounded-pill bi bi-pencil-square text-white fs-6'  %>
             <%= link_to '', servico, method: :delete, class: 'btn btn-danger rounded-pill bi bi-trash3-fill', data: { confirm: 'Are you sure?' } %>
@@ -78,12 +83,12 @@
         </tr>
 
         <div class="modal fade" id="servicoModal<%= servico.id %>" tabindex="-1" aria-labelledby="servicoLabel<%= servico.id %>" aria-hidden="true">
-        <div class="modal-dialog ">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="servicoLabel<%= servico.id %>">Detalhes do serviço</h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
+          <div class="modal-dialog ">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="servicoLabel<%= servico.id %>">Detalhes do serviço</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
               <div class="modal-body text-center">
                 <%= image_tag servico.imagem, width:'80%' if servico.imagem.present? %>
                 <div class="mt-2"><span style="font-size: 0.8rem"><b>Cliente:</b> </span><%= servico.cliente.upcase %></div>
@@ -99,7 +104,6 @@
                   <% end %>
                 </div>
               </div>
-              
             </div>
           </div>
         </div>
