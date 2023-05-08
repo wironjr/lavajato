@@ -47,13 +47,14 @@
     <thead>
       <tr>
         <th style=""></th>
-        <th style="width: 10%">Data/Hora</th>
+        <th style="width: 5%">Data/Hora</th>
         <th style="width: 20%">Cliente</th>
-        <th style="width: 20%">Serviço</th>
-        <th style="width: 15%">Veículo</th>
+        <th >Serviço</th>
+        <th >Veículo</th>
         <th>Caixa</th>
         <th>Valor</th>
         <th>Pago?</th>
+        <th>Recibo</th>
         <th >Ações</th>
       </tr>
     </thead>
@@ -77,6 +78,10 @@
             <% else %>
               <span class="badge rounded-pill bg-danger">não</span>
             <% end %>
+          </td>
+          <td>
+            <%= link_to 'GERAR', servico_recibo_path(servico), class:'badge rounded-pill bg-secondary link-limpo' if servico.pago %>
+            <%= link_to 'GERAR', '', class:'badge rounded-pill bg-danger link-limpo pe-none' unless servico.pago %>
           </td>
           <td>
             <%#= link_to 'Show', servico %>
