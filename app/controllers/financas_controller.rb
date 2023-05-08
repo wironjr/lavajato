@@ -63,13 +63,15 @@ class FinancasController < ApplicationController
     @users_func = User.where(tipo: ["FUNCIONÁRIO", "FUNCIONÁRIO COM ACESSO"]).where("to_char(date_trunc('month', created_at), 'YYYY-MM') <= '#{Time.now.strftime('%Y-%m')}' AND to_char(date_trunc('month', desligamento), 'YYYY-MM') >= '#{Time.now.strftime('%Y-%m')}'")
     @despesas = Despesa.all
     @servicos = Servico.all
+    user_ids = User.where(tipo: "FUNCIONÁRIO").where("to_char(date_trunc('month', created_at), 'YYYY-MM') <= '#{Time.now.strftime('%Y-%m')}' AND to_char(date_trunc('month', desligamento), 'YYYY-MM') >= '#{Time.now.strftime('%Y-%m')}'").pluck(:id)
+    @despeses_func = @despesas.where(tipo: "FUNCIONÁRIO").where(funcionario: user_ids).sum(:valor)
 
     ##### qnt de usuarios #####
     @users_quantidade = @users.count
 
     ##### lucro ######
     @servicos_total = @servicos.where(data: Time.now.beginning_of_month..Time.now.end_of_month).where(pago: :true).map(&:valor).sum
-    @despeses_mes = @despesas.where(data: Time.now.beginning_of_month..Time.now.end_of_month).sum(:valor)
+    @despeses_mes = @despesas.where(data: Time.now.beginning_of_month..Time.now.end_of_month).sum(:valor) +  @despeses_func
     @servicos_lucro = @servicos_total - @despeses_mes
     @servicos_lucro_individual =  @servicos_lucro / @users_quantidade
 
