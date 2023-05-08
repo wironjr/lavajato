@@ -1,29 +1,96 @@
-  <div class="border mt-5 shadow">
-    <div class="text-center mt-5">
-      <%= image_tag("logocleanner.png", width: 200) %>
-    </div>
-    <div class="mt-5 p-2 d-flex justify-content-between " style="background: #dedede">
-      <div class="ms-5 ">
-        <h1>RECIBO</h1>
-      </div>
-      <div class="d-flex me-5 align-items-center fs-4" >
-        <%= @servico.data.strftime('%d/%m/%Y %H:%M')  %>
-      </div>
-    </div>
 
-    <div class="mt-5 text-center fs-3 text-uppercase">
-      Recebemos de <b><%= @servico.cliente.capitalize %></b> a importância de<br>
-      <%= numero_real(@servico.valor,2) %><span class="fs-6 "> (<%= @servico.valor.extenso(lc: :br)%>)<br></span>
-      referente a <b><%= @servico.servico.capitalize %></b> do veículo <b><%= @servico.veiculo %></b>
+<div class="mt-5 card shadow w-25 p-4">
+<b class="mb-1">Ajustes do recibo</b>
+  Tamanho da logo
+  <input class="none mb-1" type="range" min="200" max="600" value="0" id="fader" step="10" >
+  Tamanho da fonte
+  <input class="none" type="range" min="30" max="200" value="30" id="fader2" step="10" >
+  Tamanho da assinatura
+  <input class="none" type="range" min="15" max="40" value="15" id="fader3" step="1" >
+</div>
+
+<div class="border mt-5 shadow " id="recibo">
+  <div class="text-center mt-5">
+    <% if @logo_imagem.present? && @logo_imagem.imagem.present? %>
+      <%= image_tag( @logo_imagem.imagem, width: 200, id:'img' ) %>
+    <% else %>
+      <%= image_tag("logocleanner.png", width: 300) %>
+    <% end %>
+  </div>
+  <div class="mt-5 p-2 d-flex justify-content-between " style="background: #dedede">
+    <div class="ms-5">
+      <h1>RECIBO</h1>
     </div>
-<br><br><br><br>
-    <div class="text-center mt-5 mb-5">
-      ________________________________________________________________<br>
-      NOME DO LAVA JATO
-      <%#= @servico.data.strftime('%d/%m/%Y %H:%M')  %>
+    <div class="d-flex me-5 align-items-center fs-4" >
+      <%= @servico.data.strftime('%d/%m/%Y %H:%M')  %>
     </div>
   </div>
-    <br><br><br>
-    <div class="mb-4">
-      <%= link_to "Voltar", servicos_path, class: "btn btn-primary active" %>
-    </div>
+
+  <div class="mt-5 text-center fs-3 text-uppercase" >
+    <span class="rescibo">Recebemos de <b><%= @servico.cliente.capitalize %></b> a importância de<br>
+    <%= numero_real(@servico.valor,2) %><span class="fs-6 "> (<%= @servico.valor.extenso(lc: :br)%>)<br></span>
+    referente a <b><%= @servico.servico.capitalize %></b> do veículo <b><%= @servico.veiculo %></b></span>
+  </div>
+  <br><br><br><br>
+  <div class="text-center mt-5 mb-5 assinatura">
+    ________________________________________________________________<br>
+    
+    <% if @logo_imagem.present? && @logo_imagem.nome.present?%>
+      <%= current_user.nome.upcase %> <br> <%= @logo_imagem.nome.upcase %>
+    <% else %>
+      CLEANNER LAVAJATO SYSTEM
+    <% end %>
+  </div>
+</div>
+<br><br><br>
+<div class="mb-4">
+  <%= link_to "Voltar", servicos_path, class: "btn btn-primary active" %>
+  <button onclick="gerarPDF()" class="btn btn-primary active">Gerar PDF</button>
+</div>
+
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.4.1/jspdf.debug.js" integrity="sha512-6HmJ9Y5PZWQVCd4KUwIaSgtDskfsykB+Fvm8Nq98GVCMHstaVoX9jqDdwSyGCbmJy5eLs/DXgDE3SXRS+2B2yA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.3.2/html2canvas.min.js"></script>
+
+
+<script>
+$("#fader").on("input",function () {
+    $('#img').css("width", $(this).val() + "px");
+});
+$("#fader2").on("input",function () {
+    $('.rescibo').css("font-size", $(this).val() + "px");
+});
+$("#fader3").on("input",function () {
+    $('.assinatura').css("font-size", $(this).val() + "px");
+});
+
+function gerarPDF() {
+  // Captura o elemento HTML do recibo
+  const recibo = document.getElementById('recibo');
+
+  // Cria um objeto jsPDF com orientação "portrait" e unidade "mm"
+  const pdf = new jsPDF('p', 'mm', 'a4');
+
+
+  // Converte o conteúdo HTML do recibo em uma imagem usando o HTML2Canvas
+  html2canvas(recibo).then(function(canvas) {
+    // Calcula a proporção de escala para reduzir a imagem e mantê-la dentro da página
+    const proporcao = Math.min(190 / canvas.width, 277 / canvas.height);
+
+    // Define o tamanho da imagem no PDF e a centraliza na página
+    const largura = canvas.width * proporcao;
+    const altura = canvas.height * proporcao;
+    const x = (pdf.internal.pageSize.getWidth() - largura) / 2;
+    const y = (pdf.internal.pageSize.getHeight() - altura) / 2;
+
+    // Adiciona a imagem do recibo ao PDF
+    pdf.addImage(canvas.toDataURL('image/png'), 'PNG', x, y, largura, altura);
+
+    // Salva o PDF com o nome "recibo.pdf"
+    pdf.save('Recibo <%= @servico.cliente.capitalize %> - <%= @logo_imagem.nome.capitalize if @logo_imagem.present? %>.pdf');
+  });
+}
+
+
+</script>

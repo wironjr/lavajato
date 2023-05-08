@@ -13,7 +13,7 @@ class ServicosController < ApplicationController
     @servicos_pago_pendedente = @servicos.where("to_char(data,'YYYY-MM-DD') = '#{Time.now.to_date.to_s}'").where(pago: :false).count
     @users = User.all.select("id","nome").order(:nome)
 
-    @pagy, @servicos = pagy(@servicos)
+    @pagy,  @servicos_do_dia = pagy( @servicos_do_dia)
   end
 
   def todos
@@ -71,6 +71,8 @@ class ServicosController < ApplicationController
 
   def recibo
     @servico = Servico.find(params[:servico_id])
+    @logo_imagem = LogoImagem.all.limit(1)
+    @logo_imagem = @logo_imagem[0]
   end
 
   # GET /servicos/1 or /servicos/1.json

@@ -1,6 +1,10 @@
 Rails.application.routes.draw do
-  resources :tipos_servicos
   root to: "static_pages#index"
+  resources :logo_imagems do
+    delete 'logo_imagems/:id/apagar_foto', to: 'logo_imagems#apagar_foto', as: :apagar_foto_logo_imagem
+  end
+  
+  resources :tipos_servicos
   
   resources :users
 
