@@ -38,10 +38,13 @@ class FinancasController < ApplicationController
       ano = @mes.split("-")[0].to_i
       mes = @mes.split("-")[1].to_i
 
+      user_ids = User.where(tipo: "FUNCIONÁRIO").where("to_char(date_trunc('month', created_at), 'YYYY-MM') <= '#{params[:mes_select]}' AND to_char(date_trunc('month', desligamento), 'YYYY-MM') >= '#{params[:mes_select]}'").pluck(:id)
+      @despeses_func = @despesas.where(tipo: "FUNCIONÁRIO").where(funcionario: user_ids)
+
       @servicos_mensal = @servicos.where("DATE_PART('year', data) = ? AND DATE_PART('month', data) = ?", ano, mes) if params[:mes_select].present?
-      @despesas_mensal = @despesas.where("DATE_PART('year', data) = ? AND DATE_PART('month', data) = ?", ano, mes) if params[:mes_select].present?
+      @despesas_mensal = @despesas.where("DATE_PART('year', data) = ? AND DATE_PART('month', data) = ?", ano, mes) + @despeses_func if params[:mes_select].present?
       @despeses_mes = @despesas.where("DATE_PART('year', data) = ? AND DATE_PART('month', data) = ?", ano, mes).sum(:valor)
-      @despesas_valor = @despesas_mensal.sum(:valor)
+      @despesas_valor = @despesas.where("DATE_PART('year', data) = ? AND DATE_PART('month', data) = ?", ano, mes).sum(:valor) + @despeses_func.sum(:valor)
       @despesas_media_valor = @despesas_valor / @despesas_mensal.count if @despesas_mensal.count > 0 
       @servicos_total = @servicos_mensal.map(&:valor).sum
       @servicos_lucro = @servicos_total - @despeses_mes
