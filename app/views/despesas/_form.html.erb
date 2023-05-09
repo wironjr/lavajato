@@ -1,35 +1,54 @@
 <%= form_with(model: despesa) do |form| %>
 <div class="flash-msg hide"><%= render 'layouts/error_messages', object: form.object %></div>
 
-   <div class="form-group mb-2 mt-3">
-    <%= form.label :data, 'Data' %>
-    <%= form.datetime_local_field :data, value: @despesa.data.present? ?  @despesa.data.strftime('%Y-%m-%dT%H:%M') : Time.now.strftime('%Y-%m-%dT%H:%M'), class: "form-control" %>
+<div class="row">
+  <div class="col-sm-2">
+    <div class="form-group mb-2 mt-3">
+      <%= form.label :data, 'Data' %>
+      <%= form.datetime_local_field :data, value: @despesa.data.present? ?  @despesa.data.strftime('%Y-%m-%dT%H:%M') : Time.now.strftime('%Y-%m-%dT%H:%M'), class: "form-control" %>
+    </div>
   </div>
-   <div class="form-group mb-2 mt-3">
-    <%= form.label :observacao, 'Observação' %>
-    <%= form.text_field :observacao, class: "form-control text-uppercase" %>
+  <div class="col-sm-10">
+    <div class="form-group mb-2 mt-3">
+      <%= form.label :observacao, 'Observação' %>
+      <%= form.text_field :observacao, class: "form-control text-uppercase" %>
+    </div>
   </div>
-  <div class="form-group mb-2">
-    <%= form.label :tipo %>
-    <%= form.select :tipo, options_for_select([["PRODUTOS", "PRODUTOS"], ["GERAL", "GERAL"], ["FUNCIONÁRIO", "FUNCIONÁRIO"], ["VALE", "VALE"]], @despesa.tipo), {include_blank: "Selecione"}, class: "form-control text-uppercase" if params[:action] == 'edit' %>
-    <%= form.select :tipo, options_for_select([["PRODUTOS", "PRODUTOS"], ["GERAL", "GERAL"], ["FUNCIONÁRIO", "FUNCIONÁRIO"], ["VALE", "VALE"]], params[:tipo_params]), {include_blank: "Selecione"}, class: "form-control text-uppercase" if params[:action] == 'new' %>
-    <%# binding.pry %>
+</div>
+
+<div class="row">
+  <div class="col-sm-4">
+    <div class="form-group mb-2">
+      <%= form.label :tipo %>
+      <%= form.select :tipo, options_for_select([["PRODUTOS", "PRODUTOS"], ["GERAL", "GERAL"], ["FUNCIONÁRIO", "FUNCIONÁRIO"], ["VALE", "VALE"]], @despesa.tipo), {include_blank: "Selecione"}, class: "form-control text-uppercase" if params[:action] == 'edit' %>
+      <%= form.select :tipo, options_for_select([["PRODUTOS", "PRODUTOS"], ["GERAL", "GERAL"], ["FUNCIONÁRIO", "FUNCIONÁRIO"], ["VALE", "VALE"]], params[:tipo_params]), {include_blank: "Selecione"}, class: "form-control text-uppercase" if params[:action] == 'new' %>
+    </div>
   </div>
 
-  <div class="form-group mb-2  " id="div-vale">
-    <%= form.label :vale, 'Vale' %>
-    <%= form.select :vale, @users.map { |u| [u.nome.upcase] },{include_blank: "Selecione"}, class: "form-control text-uppercase" %>
+  <div class="col-sm-4" id="div-vale">
+    <div class="form-group mb-2  " >
+      <%= form.label :vale, 'Vale' %>
+      <%= form.select :vale, @users.map { |u| [u.nome.upcase] },{include_blank: "Selecione"}, class: "form-control text-uppercase" %>
+    </div>
   </div>
 
-  <div class="form-group mb-2  " id="div-func">
-    <%= form.label :funcionario, 'Funcionário' %>
-    <%= form.select :funcionario, @users_func.map { |u| [u.nome.upcase, u.id] },{include_blank: "Selecione"}, class: "form-control text-uppercase" %>
+  <div class="col-sm-4" id="div-func">
+    <div class="form-group mb-2  " >
+      <%= form.label :funcionario, 'Funcionário' %>
+      <%= form.select :funcionario, @users_func.map { |u| [u.nome.upcase, u.id] },{include_blank: "Selecione"}, class: "form-control text-uppercase" %>
+    </div>
   </div>
-  
-  <div class="form-group mb-2">
-    <%= form.label :valor %>
-    <%= form.text_field :valor, value: params[:action] == 'edit' ? numero_real(@despesa.valor,2) : '', class: "form-control moeda" %>
+
+  <div class="col-sm-4">
+    <div class="form-group mb-2">
+      <%= form.label :valor %>
+      <%= form.text_field :valor, value: params[:action] == 'edit' ? numero_real(@despesa.valor,2) : '', class: "form-control moeda" %>
+    </div>
   </div>
+</div>
+
+
+
   <div class="form-group mt-4">
     <%= form.submit "Salvar", class: "btn btn-primary me-2" %>
     <%= link_to "Voltar", despesas_path, class: "btn btn-primary active" %>
