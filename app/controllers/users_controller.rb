@@ -48,9 +48,8 @@ class UsersController < ApplicationController
 
   # DELETE /users/1 or /users/1.json
   def destroy
-    @user.destroy
+    Despesa.where(user_id: params[:id]).destroy_all && @user.destroy
 
-    
     flash[:success] = "Usuário apagado com sucesso!" 
     redirect_to users_path
     

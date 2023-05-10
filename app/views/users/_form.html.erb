@@ -32,8 +32,10 @@
 
   <div class="form-group mt-4">
     <%= form.submit "Salvar", class: "btn btn-primary me-2" %>
-    <%= link_to "Voltar", users_path, class: "btn btn-primary active" %>
+    <%= link_to "Voltar", users_path, class: "btn btn-primary active me-5" %>
+    <%= link_to ' Apagar Usuário', user, method: :delete, class: 'btn btn-danger bi bi-trash3-fill', data: { confirm: 'Apagando o registro ele sumirá da base de dados e não será possível ter o financeiro ligado a ele. Apagará as despesas relacionadas a ele caso tenha. Tem certeza?' } %>
   </div>
+
 
 <% end %>
 
