@@ -32,7 +32,10 @@
     </tbody>
   </table>
 <% else %>
-  <%= link_to ' Logo', new_logo_imagem_path, class:'btn btn-primary bi-plus-circle-fill shadow btn-tremer mt-4', style:'width: 8rem; height: auto !important; font-size: 1.73rem' %>
+  <div class="mt-3">
+    Não tem nenhum logotipo cadastrado no sistema.<br>
+    <%= link_to ' Adicionar', new_logo_imagem_path, class:'btn btn-primary bi-plus-circle shadow btn-tremer mt-2', style:'width: 9rem; height: auto !important; font-size: 1.3rem' %>
+  </div>
 <% end %>
 
 <br>
