@@ -2,7 +2,7 @@
 
 <h1 class="mt-3">Todos serviços do mês de <span id="mes-atual"></span></h1>
 
-<div class=" d-flex justify-content-center mt-5 gap-4" >
+<div class=" d-flex justify-content-center mt-5 flex-wrap gap-4" >
   <div class="card shadow text-center text-bg-primary" style="width: 10rem">
     <h5 class="card-header">Valor</h5>
     <div class="card-body">
@@ -46,8 +46,7 @@
   </div>
 </form>
 
-
-<div class="table-responsive mt-4">
+<div class="table mt-4 hide-res">
   <table class="table">
     <thead>
       <tr>
@@ -91,7 +90,7 @@
           <td>
             <%#= link_to 'Show', servico %>
             <%= link_to '', edit_servico_path(servico), class:'btn btn-primary rounded-pill bi bi-pencil-square text-white fs-6'  %>
-            <%= link_to '', servico, method: :delete, class: 'btn btn-danger rounded-pill bi bi-trash3-fill', data: { confirm: 'Are you sure?' } %>
+            <%= link_to '', servico, method: :delete, class: 'btn btn-danger rounded-pill bi bi-trash3-fill', data: { confirm: 'Apagar?' } %>
           </td>
         </tr>
       <% end %>
@@ -99,6 +98,51 @@
   </table>
 </div>
 
+<div class="hide show-res  ">
+  <% @servicos.each do |servico| %>
+  <div class="d-flex justify-content-center">
+    <div class="card  shadow mt-4" style="width: 95%;">
+      <div class="card-header" style=" background-color: #e4e4e4;">
+      <div class="row" >
+        <div class="col-6" >
+          <% if servico.imagem.present? %>
+            <div class="" >
+              <div class="overflow-hidden " style="width:7rem; height:7rem">
+                <%= image_tag servico.imagem, width:100  %>
+              </div>
+            </div>
+          <% end %>
+        </div>
+
+        <div class="col-6" >
+          <% if servico.pago %>
+            <div class="badge rounded-pill bg-success fs-3  mt-3 float-end">PAGO</div>
+          <% else %>
+            <div class="badge rounded-pill bg-danger float-none">PAGAMENTO PENDENTE</div>
+          <% end %>
+
+           <div class="mt-2 float-end me-1">
+            <%= link_to '', edit_servico_path(servico), class:'btn btn-primary rounded-pill bi bi-pencil-square text-white fs-6 shadow'  %>
+            <%= link_to '', servico, method: :delete, class: 'btn btn-danger rounded-pill bi bi-trash3-fill shadow', data: { confirm: 'Apagar?' } %>
+          </div>
+        </div>
+      </div>
+      </div>
+
+      <div class="text-center mt-2 mb-2">
+        
+        <div style="font-size: 1rem"><b>Data/Hora: </b> <span class="fs-5"><%= servico.data.strftime('%d/%m/%Y - %H:%M') %></span></div>
+        <div style="font-size: 1rem"><b>Cliente: </b> <span class="fs-5"><%= servico.cliente.upcase %></span></div>
+        <div style="font-size: 1rem"><b>Serviço: </b> <span class="fs-5"><%= servico.servico.upcase %></span></div>
+        <div style="font-size: 1rem"><b>Veículo: </b> <span class="fs-5"><%= servico.veiculo.upcase %></span></div>
+        <div style="font-size: 1rem"><b>Caixa: </b> <span class="fs-5"><%= servico.caixa.upcase %></span></div>
+        <div style="font-size: 1rem"><b>Valor: </b> <span class="fs-5"><%= numero_real(servico.valor,2) %></span></div>
+      </div>
+      
+    </div>
+  </div>
+  <% end %>
+</div>
 
 <br>
 
