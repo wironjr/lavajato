@@ -110,15 +110,35 @@ class DespesasController < ApplicationController
     @users = User.all
     @users_func = User.where(tipo: ["FUNCIONÁRIO", "FUNCIONARIO COM ACESSO"]).where(desligamento: "01-01-3000")
     params[:despesa][:valor] = params[:despesa][:valor].gsub('R$','').gsub(' ','').gsub('.','')
+    
     @despesa = Despesa.new(despesa_params)
-#binding.pry
+
     if Despesa.where(tipo: "FUNCIONÁRIO").where(tipo: params[:despesa][:tipo]).where(funcionario: params[:despesa][:funcionario]).present?
       flash[:danger] = "Despesa de funcionário já cadastrada, edite a existente!" 
       redirect_to despesas_path
     else
       if @despesa.save
-        flash[:success] = "Despesa criada com sucesso!" 
-        redirect_to despesas_path
+        case @despesa.tipo
+          when "PRODUTOS"
+            flash[:success] = "Produto criado com sucesso!"
+          when "GERAL"
+            flash[:success] = "Despesa geral criada com sucesso!"
+          when "VALE"
+            flash[:success] = "Vale criado com sucesso!"
+          else
+            flash[:success] = "Despesa criada com sucesso!"
+        end
+        
+        case @despesa.tipo
+          when "PRODUTOS"
+            redirect_to produtos_despesas_path
+          when "GERAL"
+            redirect_to geral_despesas_path
+          when "VALE"
+            redirect_to vale_despesas_path
+          else
+            redirect_to despesas_path
+        end  
       else
         flash[:danger] = "Despesa não foi criada!"
         render 'new'

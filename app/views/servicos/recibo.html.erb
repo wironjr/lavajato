@@ -1,12 +1,22 @@
 
-<div class="mt-5 card shadow w-25 p-4">
-<b class="mb-1">Ajustes do recibo</b>
-  Tamanho da logo
-  <input class="none mb-1" type="range" min="200" max="600" value="0" id="fader" step="10" >
-  Tamanho da fonte
-  <input class="none" type="range" min="30" max="200" value="30" id="fader2" step="10" >
-  Tamanho da assinatura
-  <input class="none" type="range" min="15" max="40" value="15" id="fader3" step="1" >
+<div class="d-flex justify-content-center">
+  <div class="mt-5 card shadow p-4 no-print" style="width: 60rem">
+    <b class="mb-1 text-center mb-3">Ajustes de tamanho no recibo</b>
+    <div class="d-flex justify-content-center flex-wrap gap-5">
+      <div class="">
+        Logotipo
+        <input class="none mb-1" type="range" min="200" max="600" value="0" id="fader" step="10" >
+      </div>
+      <div class=" ">
+        Fonte
+        <input class="none" type="range" min="30" max="200" value="30" id="fader2" step="10" >
+      </div>
+      <div class="">
+        Assinatura
+        <input class="none" type="range" min="15" max="40" value="15" id="fader3" step="1" >
+      </div>
+    </div>
+  </div>
 </div>
 
 <div class="border mt-5 shadow " id="recibo">
@@ -43,9 +53,10 @@
   </div>
 </div>
 <br><br><br>
-<div class="mb-4">
+<div class="mb-5 no-print">
   <%= link_to "Voltar", servicos_path, class: "btn btn-primary active" %>
-  <button onclick="gerarPDF()" class="btn btn-primary active">Gerar PDF</button>
+  <button id="btn-imprimir" class="btn btn-primary active ms-2">Imprimir</button>
+  <button onclick="gerarPDF()" class="btn btn-primary active">Baixar PDF</button>
 </div>
 
 
@@ -56,13 +67,13 @@
 
 <script>
 $("#fader").on("input",function () {
-    $('#img').css("width", $(this).val() + "px");
+  $('#img').css("width", $(this).val() + "px");
 });
 $("#fader2").on("input",function () {
-    $('.rescibo').css("font-size", $(this).val() + "px");
+  $('.rescibo').css("font-size", $(this).val() + "px");
 });
 $("#fader3").on("input",function () {
-    $('.assinatura').css("font-size", $(this).val() + "px");
+  $('.assinatura').css("font-size", $(this).val() + "px");
 });
 
 function gerarPDF() {
@@ -92,5 +103,9 @@ function gerarPDF() {
   });
 }
 
+$('#btn-imprimir').click(function(){
+  window.print();
+  return false;
+});
 
 </script>
