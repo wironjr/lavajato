@@ -50,7 +50,7 @@
 </div>
 
 
-<table class="table mt-4">
+<table class="table mt-4 hide-res">
   <thead>
     <tr>
       <th>Data</th>
@@ -66,16 +66,34 @@
       <tr>
         <td><%= despesa.data.strftime('%d/%m/%Y %H:%M') %></td>
         <td><%= despesa.observacao.upcase %></td>
-        <td class="text-uppercase"><%= despesa.tipo %> <%= despesa.vale.blank? ? despesa.user&.nome : despesa.vale %></td>
+        <td class="text-uppercase"><%= despesa.tipo %> <%= despesa.vale != nil ? despesa.vale : '' %></td>
         <td><%= numero_real(despesa.valor,2) %></td>
         <td>
           <%= link_to '', edit_despesa_path(despesa), class:'btn btn-primary rounded-pill bi bi-pencil-square text-white fs-6'  %>
-          <%= link_to '', despesa, method: :delete, class: 'btn btn-danger rounded-pill bi bi-trash3-fill', data: { confirm: 'Tem certeza?' } %>
+          <%= link_to '', despesa, method: :delete, class: 'btn btn-danger rounded-pill bi bi-trash3-fill', data: { confirm: "Apagar a despesa #{despesa.vale.blank? ? despesa.observacao.capitalize : despesa.tipo.capitalize + " " + despesa.vale.capitalize}, tem certeza?" } %>
         </td>
       </tr>
     <% end %>
   </tbody>
 </table>
+
+<div class="hide show-res  mt-3">
+
+  <% @despesas.each do |despesa| %>
+  <div class="d-flex justify-content-center">
+    <div class="card  shadow mt-4" style="width: 95%;">
+      <div class="text-center mt-2 mb-2">
+        <div style="font-size: 1rem"><b>Data/Hora: </b> <span class="fs-5"><%= despesa.data.strftime('%d/%m/%Y - %H:%M') %></span></div>
+        <div style="font-size: 1rem"><b>Observação: </b> <span class="fs-5"><%= despesa.observacao.upcase %></span></div>
+        <div style="font-size: 1rem"><b>Tipo: </b> <span class="fs-5"><%= despesa.tipo %> <%= despesa.vale != nil ? despesa.vale : '' %></span></div>
+        <div style="font-size: 1rem"><b>Valor: </b> <span class="fs-5"><%= numero_real(despesa.valor,2) %></span></div>
+        <%= link_to '', edit_despesa_path(despesa), class:'btn btn-primary rounded-pill bi bi-pencil-square text-white fs-6 mt-2'  %>
+        <%= link_to '', despesa, method: :delete, class: 'btn btn-danger rounded-pill bi bi-trash3-fill mt-2', data: { confirm: "Apagar a despesa #{despesa.vale.blank? ? despesa.observacao.capitalize : despesa.tipo.capitalize + " " + despesa.vale.capitalize}, tem certeza?" } %>
+      </div>     
+    </div>
+  </div>
+  <% end %>
+</div>
 
 <br>
 
