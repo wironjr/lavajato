@@ -25,12 +25,24 @@ class UsersController < ApplicationController
     params[:user][:nome] = params[:user][:nome].downcase
     @user = User.new(user_params)
 
-      if @user.save
-        flash[:success] = "Usuário criado com sucesso!" 
+    if @user.save
+      case @user.tipo
+      when 'FUNCIONÁRIO'
+        flash[:success] = "Funcionário(a) #{@user.nome.upcase} criado com sucesso!" 
+        redirect_to users_path
+      when 'FUNCIONÁRIO COM ACESSO'
+        flash[:success] = "Funcionário(a) #{@user.nome.upcase} criado com sucesso!" 
+        redirect_to users_path
+      when 'ADMINISTRADOR'
+        flash[:success] = "Administrador #{@user.nome.upcase} criado com sucesso!" 
         redirect_to users_path
       else
-        render 'new'
+        flash[:success] = "Usuário criado com sucesso!" 
+        redirect_to users_path
       end
+    else
+      render 'new'
+    end
    
   end
 
