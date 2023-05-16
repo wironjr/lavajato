@@ -113,7 +113,7 @@ class ServicosController < ApplicationController
     end
 
     if @servico.save
-      flash[:success] = "Serviço criado com sucesso!" 
+      flash[:success] = "Serviço #{@servico.servico.downcase} do veículo #{@servico.veiculo.capitalize} foi criado com sucesso!" 
       redirect_to servicos_path
     else
       render 'new'
