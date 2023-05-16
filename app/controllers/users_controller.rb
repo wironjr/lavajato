@@ -18,11 +18,13 @@ class UsersController < ApplicationController
 
   # GET /users/1/edit
   def edit
+    @despesas_count = Despesa.where(tipo: "VALE").where(vale: @user.nome.upcase).count 
   end
 
   # POST /users or /users.json
   def create
     params[:user][:nome] = params[:user][:nome].downcase
+   
     @user = User.new(user_params)
 
     if @user.save
