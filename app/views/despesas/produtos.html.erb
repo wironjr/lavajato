@@ -5,8 +5,12 @@
 <form>
   <div class="row mt-4">
     <div class="col-sm-2 mb-2">
-      <input type="month" class="form-control input-despesa-busca" name="mes_select" placeholder="Selecione..."
-       value="<%= params[:mes_select].present? ? params[:mes_select] : "" %>">
+      <input type="month" class="form-control input-despesa-busca text-uppercase" name="mes_select" placeholder="Selecione..."
+       value="<%= params[:mes_select].present? ? params[:mes_select] : '' %>">
+    </div>
+    <div class="col-sm-2 mb-2">
+      <input type="text" class="form-control text-uppercase" name="nome_produto_busca" placeholder="Nome produto..."
+       value="<%= params[:nome_produto_busca].present? ? params[:nome_produto_busca] : "" %>">
     </div>
     <div class="col-sm-1 mb-2">
       <button type="submit" class="btn btn-primary">Pesquisar</button>

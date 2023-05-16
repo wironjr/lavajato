@@ -8,6 +8,9 @@
       <input type="month" class="form-control input-despesa-busca" name="mes_select" placeholder="Selecione..."
        value="<%= params[:mes_select].present? ? params[:mes_select] : "" %>">
     </div>
+    <div class="col-sm-2 mb-2">
+      <input type="text" class="form-control text-uppercase" name="vale_nome_busca" placeholder="Nome...">
+    </div>
     <div class="col-sm-1 mb-2">
       <button type="submit" class="btn btn-primary">Pesquisar</button>
     </div>

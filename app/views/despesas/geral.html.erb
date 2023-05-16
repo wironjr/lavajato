@@ -4,6 +4,25 @@
 <h1 class="mt-2">Despesas em geral</h1>
 <span class="text-danger">(exeto produtos)</span>
 
+<form>
+  <div class="row mt-4">
+    <div class="col-sm-2 mb-2">
+      <input type="month" class="form-control input-despesa-busca text-uppercase" name="mes_select" placeholder="Selecione..."
+       value="<%= params[:mes_select].present? ? params[:mes_select] : '' %>">
+    </div>
+    <div class="col-sm-2 mb-2">
+      <input type="text" class="form-control text-uppercase" name="nome_despesa_busca" placeholder="Nome despesa..."
+       value="<%= params[:nome_despesa_busca].present? ? params[:nome_despesa_busca] : "" %>">
+    </div>
+    <div class="col-sm-1 mb-2">
+      <button type="submit" class="btn btn-primary">Pesquisar</button>
+    </div>
+    <div class="col-sm-2 mb-2">
+    <a href="/despesas/geral" class="btn btn-primary">Limpar Filtro</a>
+    </div>
+  </div>
+</form>
+
 <div class=" d-flex justify-content-center mt-3 gap-4 mb-4" >
   <div class="card shadow text-center text-bg-primary" style="width: 10rem">
     <h5 class="card-header">Valor</h5>
@@ -35,7 +54,7 @@
       <tr>
         <td><%= despesa.data.strftime('%d/%m/%Y %H:%M') %></td>
         <td><%= despesa.observacao.upcase %></td>
-        <td class="text-uppercase"><%= despesa.tipo %> <%= despesa.vale.blank? ? despesa.user&.nome : despesa.vale %></td>
+        <td class="text-uppercase"><%= despesa.tipo %> <%= despesa.vale.blank? &&  despesa.tipo == "FUNCIONÁRIO" ? despesa.user&.nome.upcase : despesa.vale %></td>
         <td><%= numero_real(despesa.valor,2) %></td>
         <td>
           <%= link_to '', edit_despesa_path(despesa), class:'btn btn-primary rounded-pill bi bi-pencil-square text-white fs-6'  %>
