@@ -110,61 +110,90 @@
   </div>
 </div>
 
+<div class="d-flex justify-content-center mt-5 gap-3 flex-wrap">
+  <div class="card shadow text-center text-bg-" style="width: 22rem">
+    <h5 class="card-header">Ultimos serviços</h5>
+    <div class="">
+      <div class="card-body">
+        <h6 class="card-title fw-bold" >
+        <% @ultimos_servicos.each do |servico| %>
+          <%= servico.cliente.upcase %> - 
+          <%= servico.veiculo.upcase %> - <%= numero_real(servico.valor,2) %><br>
+        <% end %>
+        </h6>
+      </div>
+    </div>
+  </div>
+  <div class="card shadow text-center text-bg-" style="width: 22rem">
+    <h5 class="card-header">Ultimas despesas</h5>
+    <div class="">
+      <div class="card-body">
+        <h6 class="card-title fw-bold" >
+        <% @ultimos_despesas.each do |despesas| %>
+          <%= despesas.observacao.upcase %> - 
+          <%= despesas.vale != nil ? despesas.vale : '' %> <%= despesas.tipo == "FUNCIONÁRIO" ? despesas.user.nome.upcase : '' %> - <%= numero_real(despesas.valor,2) %><br>
+        <% end %>
+        </h6>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div class="mt-5 mb-4 card p-4 shadow">
   
-<div id="chart"></div>
+  <div id="chart"></div>
 
-<%= javascript_tag do %>
-  $(document).ready(function() {
-    var chart = new Highcharts.Chart({
-      credits: {
-        enabled: false
-      },
-      lang: {
-        printChart: "Imprimir gráfico",
-        downloadPNG: "Baixar como PNG",
-        downloadJPEG: "Baixar como JPEG",
-        downloadPDF: "Baixar como PDF",
-        downloadSVG: "Baixar como SVG",
-        contextButtonTitle: "Opções de exportação do gráfico",
-        viewFullscreen: "Ver gráfico em tela cheia",
-        exitFullscreen: "Sair tela cheia"
-      },
-      chart: {
-        renderTo: 'chart',
-        type: 'column'
-      },
-      title: {
-        text: 'Quantidade de serviços e lucro dos últimos meses'
-      },
-      xAxis: {
-        categories: <%= raw @categories %>
-      },
-      yAxis: [{
+  <%= javascript_tag do %>
+    $(document).ready(function() {
+      var chart = new Highcharts.Chart({
+        credits: {
+          enabled: false
+        },
+        lang: {
+          printChart: "Imprimir gráfico",
+          downloadPNG: "Baixar como PNG",
+          downloadJPEG: "Baixar como JPEG",
+          downloadPDF: "Baixar como PDF",
+          downloadSVG: "Baixar como SVG",
+          contextButtonTitle: "Opções de exportação do gráfico",
+          viewFullscreen: "Ver gráfico em tela cheia",
+          exitFullscreen: "Sair tela cheia"
+        },
+        chart: {
+          renderTo: 'chart',
+          type: 'column'
+        },
         title: {
-          text: 'Quantidade de serviços'
-        }
-      }, {
-        opposite: true,
-        title: {
-          text: 'Lucro'
-        }
-      }],
-      series: [{
-        name: 'Quantidade de serviços',
-        data: <%= raw @services_data %>,
-        yAxis: 0
-      }, {
-        name: 'Lucro',
-        data: <%= raw @profit_data %>,
-        yAxis: 1,
-        tooltip: {
-          valuePrefix: 'R$'
-        }
-      }]
+          text: 'Quantidade de serviços e lucro dos últimos meses'
+        },
+        xAxis: {
+          categories: <%= raw @categories %>
+        },
+        yAxis: [{
+          title: {
+            text: 'Quantidade de serviços'
+          }
+        }, {
+          opposite: true,
+          title: {
+            text: 'Lucro'
+          }
+        }],
+        series: [{
+          name: 'Quantidade de serviços',
+          data: <%= raw @services_data %>,
+          yAxis: 0
+        }, {
+          name: 'Lucro',
+          data: <%= raw @profit_data %>,
+          yAxis: 1,
+          tooltip: {
+            valuePrefix: 'R$'
+          }
+        }]
+      });
     });
-  });
-<% end %>
+  <% end %>
 
 </div>
 

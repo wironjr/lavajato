@@ -11,6 +11,11 @@ class StaticPagesController < ApplicationController
     @servicos_pago_pendedente = @servicos.where(data: Time.now.beginning_of_month..Time.now.end_of_month).where(pago: :false).count
     @despesas_mes = @despesas.where(data: Time.now.beginning_of_month..Time.now.end_of_month).sum(:valor)
     @despesas_mes_modal = @despesas.where(data: Time.now.beginning_of_month..Time.now.end_of_month)
+
+    @ultimos_servicos = @servicos.order(data: :desc).limit(3)
+    @ultimos_despesas = @despesas.order(data: :desc).limit(3)
+    
+    
     
     start_date = 3.months.ago.beginning_of_month
     end_date = Time.now.end_of_month
