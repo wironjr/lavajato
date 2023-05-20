@@ -21,6 +21,11 @@ class UsersController < ApplicationController
     @despesas_count = Despesa.where(tipo: "VALE").where(vale: @user.nome.upcase).count 
   end
 
+  def json_teste   
+    @user = User.find_by(nome: params[:nome])&.authenticate(params[:teste])
+    render json: JSON.parse(@user.to_json)
+  end
+
   # POST /users or /users.json
   def create
     params[:user][:nome] = params[:user][:nome].downcase

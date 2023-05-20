@@ -33,12 +33,62 @@
   <div class="form-group mt-4">
     <%= form.submit "Salvar", class: "btn btn-primary me-2" %>
     <%= link_to "Voltar", users_path, class: "btn btn-primary active me-5" %>
-    <%= link_to ' Apagar Usuário', user, method: :delete, class: 'btn btn-danger bi bi-trash3-fill',
-     data: { confirm: "Apagando o registro ele sumirá da base de dados e não será possível ter o financeiro ligado a ele. Apagará as #{@despesas_count} despesa(s) relacionadas a ele. Tem certeza?" } if params[:action] == 'edit' && @user.tipo != "ADMINISTRADOR" %>
+    <%= link_to ' Apagar Usuário', user, method: :delete, class: 'btn btn-danger bi bi-trash3-fill', id:'apagar_user',
+     data: { confirm: "Apagando o registro ele sumirá da base de dados e não será possível ter o financeiro ligado a ele. Apagará as #{@despesas_count} despesa(s) relacionadas a ele. Tem certeza?" } if params[:action] == 'edit' && @user.nome != current_user.nome %>
   </div>
 
 
+<% end %>
 
+
+
+<% if @user.tipo == "ADMINISTRADOR" && @user.nome != current_user.nome %>
+
+  <div class="mt-2" id="div-adm" >
+    <div class="text-danger fs-6" id="check-senha">
+      Senha incorreta!
+    </div>
+    <input type="password" id="senha_adm" placeholder="digite a senha.." class="form-control w-25" >
+    <button onclick="senha_adm()" class='btn btn-danger mt-2'>Permissão apagar ADM</button>
+  </div>
+
+   <script>
+    $('#senha_adm').hide()
+    $('#apagar_user').hide()
+    $('#check-senha').hide()
+    function senha_adm(){
+      $('#senha_adm').show(500)
+      
+      event.preventDefault(teste());
+    }
+    function teste(){
+
+    $('#senha_adm').change(function() {
+    
+    fetch("/users/json_teste?teste="+ $('#senha_adm').val() + "&nome="+ '<%= @user.nome%>')
+    .then( response => response.json())
+    .then( json => {
+      //debugger
+      if(json.hasOwnProperty("nome")){
+       $('#apagar_user').show(500);
+        $('#div-adm').hide(500);
+        $('#check-senha').hide();
+      }else{
+        $('#apagar_user').hide(500);
+        if($('#senha_adm').val() == ''){
+          $('#check-senha').hide()
+        }else{
+          $('#check-senha').show(300)
+        }
+       
+      }
+
+      });
+
+      })
+      }
+  </script>
+ 
 <% end %>
 
 <script>

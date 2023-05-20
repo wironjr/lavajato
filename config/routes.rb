@@ -6,7 +6,9 @@ Rails.application.routes.draw do
   
   resources :tipos_servicos
   
-  resources :users
+  resources :users do
+    get :json_teste, on: :collection
+  end
 
   resources :despesas do
     get :produtos, on: :collection
