@@ -55,8 +55,8 @@ class DespesasController < ApplicationController
       @mes = params[:mes_select]
       ano = @mes.split("-")[0].to_i
       mes = @mes.split("-")[1].to_i
-      @despesas = @despesas.where("DATE_PART('year', data) = ? AND DATE_PART('month', data) = ?", ano, mes) if params[:mes_select].present?
-      @despesas = @despesas.where('tipo ILIKE ?', "%#{params[:nome_despesa_busca]}%") if params[:nome_despesa_busca].present?
+      @despesas = Despesa.where("DATE_PART('year', data) = ? AND DATE_PART('month', data) = ?", ano, mes) if params[:mes_select].present?
+      @despesas = Despesa.where('tipo ILIKE ?', "%#{params[:nome_despesa_busca]}%") if params[:nome_despesa_busca].present?
 
       @despesas_total = @despesas.sum(:valor)
       @despesas_total_qnt = @despesas.count
