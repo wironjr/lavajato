@@ -18,12 +18,13 @@ class UsersController < ApplicationController
 
   # GET /users/1/edit
   def edit
-    @despesas_count = Despesa.where(tipo: "VALE").where(vale: @user.nome.upcase).count 
+    @despesas_count = Despesa.where(tipo: "VALE").where(vale: @user.id).count 
   end
 
   def json_teste   
-    @user = User.find_by(nome: params[:nome])&.authenticate(params[:teste])
+    @user = User.find_by(id: params[:id])&.authenticate(params[:teste])
     render json: JSON.parse(@user.to_json)
+
   end
 
   # POST /users or /users.json
