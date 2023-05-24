@@ -128,6 +128,18 @@ class ServicosController < ApplicationController
     
     params[:servico][:valor] = params[:servico][:valor].gsub('R$','').gsub(' ','').gsub('.','')
    
+    if @servico.imagem.present?
+      image = MiniMagick::Image.open(params[:servico][:imagem])
+      processed_image = ImageProcessing::MiniMagick
+        .source(image)
+        .resize_to_limit(800, 800)
+        .strip
+        .quality(80)
+        .call
+
+      @servico.imagem.attach(io: processed_image, filename: 'cleanner_image.jpg')
+    end
+    
       if @servico.update(servico_params)
         flash[:success] = "Serviço atualizado com sucesso!" 
         redirect_to servicos_path

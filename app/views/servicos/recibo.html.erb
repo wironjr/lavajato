@@ -49,7 +49,7 @@
       <%= current_user.nome.upcase %> <br> <%= @logo_imagem.nome.upcase %>
       <br><b><%= @servico.data.strftime('%d/%m/%Y')  %></b>
     <% else %>
-      CLEANNER LAVAJATO SYSTEM
+      <%= current_user.nome.upcase %> <br>CLEANNER LAVAJATO SYSTEM
       <br><b><%= @servico.data.strftime('%d/%m/%Y')  %></b>
     <% end %>
   </div>
