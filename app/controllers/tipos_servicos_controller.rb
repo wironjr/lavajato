@@ -23,6 +23,10 @@ class TiposServicosController < ApplicationController
     @tipos_servico = TiposServico.new
   end
 
+  def new_tipo_modal
+    @tipos_servico = TiposServico.new
+  end
+
   # GET /tipos_servicos/1/edit
   def edit
   end
@@ -33,7 +37,8 @@ class TiposServicosController < ApplicationController
 
     if @tipos_servico.save
       flash[:success] = "Tipo de serviço criado com sucesso!" 
-      redirect_to tipos_servicos_path
+      redirect_to new_servico_path if params[:rota].present?
+      redirect_to tipos_servicos_path unless params[:rota].present?
     else
       flash[:danger] = "Tipo de serviço não foi apagado!" 
       redirect_to tipos_servicos_path

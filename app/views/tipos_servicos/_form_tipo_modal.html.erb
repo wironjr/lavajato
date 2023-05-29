@@ -1,0 +1,15 @@
+<%= form_with(model: @tipos_servico, remote: true) do |form| %>
+
+  <div class="flash-msg hide"><%= render 'layouts/error_messages', object: form.object %></div>
+
+  <div class="form-group">
+    <%= form.label :tipo %>
+    <%= form.text_field :tipo, class: "form-control text-uppercase"  %>
+  </div>
+
+  <div class="form-group mt-4">
+    <%= form.submit "Salvar", class: "btn btn-primary me-2" %>
+  </div>
+
+  <%= hidden_field_tag :rota, value: params[:rota] %>
+<% end %>

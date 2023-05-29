@@ -4,7 +4,11 @@ Rails.application.routes.draw do
     delete 'logo_imagems/:id/apagar_foto', to: 'logo_imagems#apagar_foto', as: :apagar_foto_logo_imagem
   end
   
-  resources :tipos_servicos
+  resources :tipos_servicos do
+    collection do 
+      get 'new_modal', to: 'tipos_servicos#new_tipo_modal' 
+    end
+  end
   
   resources :users do
     get :json_teste, on: :collection

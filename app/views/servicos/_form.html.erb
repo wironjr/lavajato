@@ -25,11 +25,14 @@
   </div>
   
   <div class="row">
-    <div class="col-sm-4">
+    <div class="col-sm-3">
       <div class="form-group mb-2">
         <%= form.label :servico, 'Serviço' %>
         <%= form.select :servico, @tipos_servico.map { |t| [t.tipo.upcase] },{}, class: "form-control text-uppercase" %>
       </div>
+    </div> 
+    <div class="col-sm-2 mt-4">
+      <%= link_to "Adicionar Serviço", new_modal_tipos_servicos_path(rota: true), class: "btn btn-primary", data: { bs_toggle: "modal", bs_target: "#tipoServicoModal", remote: true  } %>
     </div>
     <div class="col-sm-2">
       <div class="form-group mb-2">
@@ -37,7 +40,7 @@
         <%= form.text_field :valor, value: params[:action] == 'edit' ? numero_real(@servico.valor,2) : '', class: "form-control moeda" %>
       </div>
     </div>
-    <div class="col-sm-4">
+    <div class="col-sm-2">
       <div class="form-group mb-2">
         <%= form.label :caixa %>
         <%= form.select :caixa, [["NORMAL"]] + @users.map { |u| [u.nome.upcase] },{}, class: "form-control" %>
@@ -50,6 +53,7 @@
       </div>
     </div>
   </div>
+
 
   
   
@@ -82,7 +86,26 @@
 <% end %>
 
 
+  <!-- modal -->
+ 
+<div class="modal fade" id="tipoServicoModal" tabindex="-1" aria-labelledby="tipoServicoModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="tipoServicoModalLabel">Cadastrar novo tipo</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+      <div id="modalTipoServico">
+      </div>
+      </div>
+    </div>
+  </div>
+</div>
+  <!-- modal -->
+
  <script>
+ 
   $(document).ready(function(){
     $('.moeda').maskMoney({
       prefix: 'R$ ',
